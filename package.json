@@ -1,0 +1,31 @@
+{
+  "name": "youtube-to-ersatztv",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Web application for converting YouTube URLs to ErsatzTV-compatible remote stream YAML files",
+  "scripts": {
+    "dev": "pnpm --parallel --filter \"./packages/**\" dev",
+    "dev:frontend": "pnpm --filter frontend dev",
+    "dev:backend": "pnpm --filter backend dev",
+    "build": "pnpm --filter \"./packages/**\" build",
+    "test": "pnpm --filter \"./packages/**\" test",
+    "lint": "pnpm --filter \"./packages/**\" lint",
+    "format": "prettier --write \"packages/**/*.{ts,tsx,json,md}\"",
+    "deploy": "pnpm deploy:backend && pnpm deploy:frontend",
+    "deploy:backend": "pnpm --filter backend deploy",
+    "deploy:frontend": "pnpm --filter frontend deploy",
+    "type-check": "pnpm --filter \"./packages/**\" type-check"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.4",
+    "typescript": "^5.3.3"
+  },
+  "packageManager": "pnpm@8.15.1",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}

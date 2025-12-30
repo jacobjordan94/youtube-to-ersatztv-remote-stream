@@ -1,0 +1,19 @@
+name = "ersatztv-api"
+main = "src/index.ts"
+compatibility_date = "2024-01-15"
+
+[vars]
+ENVIRONMENT = "production"
+
+# KV Namespaces will be configured after creation
+# Uncomment and add your namespace IDs after running:
+# npx wrangler kv:namespace create CACHE
+# npx wrangler kv:namespace create CACHE --preview
+
+# [[kv_namespaces]]
+# binding = "CACHE"
+# id = "your-kv-namespace-id"
+# preview_id = "your-preview-kv-namespace-id"
+
+# Secrets to set via: wrangler secret put YOUTUBE_API_KEY
+# - YOUTUBE_API_KEY

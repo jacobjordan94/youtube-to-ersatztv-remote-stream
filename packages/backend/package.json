@@ -1,0 +1,26 @@
+{
+  "name": "@youtube-to-ersatztv/backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend API for YouTube to ErsatzTV converter",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "build": "tsc --noEmit",
+    "test": "vitest",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext .ts"
+  },
+  "dependencies": {
+    "hono": "^3.12.8",
+    "zod": "^3.22.4",
+    "@youtube-to-ersatztv/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240117.0",
+    "wrangler": "^3.22.4",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.0"
+  }
+}

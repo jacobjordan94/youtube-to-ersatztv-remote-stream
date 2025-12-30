@@ -1,0 +1,4 @@
+# Copy this file to .dev.vars and add your actual YouTube API key
+# Get your API key from: https://console.cloud.google.com/apis/credentials
+
+YOUTUBE_API_KEY=your_youtube_api_key_here
