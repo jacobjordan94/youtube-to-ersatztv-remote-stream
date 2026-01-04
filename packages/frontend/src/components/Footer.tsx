@@ -8,7 +8,7 @@ export function Footer() {
           rel="noopener noreferrer"
           className='inline-block cursor-pointer text-center text-sm text-gray-300 bg-neutral-800 px-3 py-1.5 rounded-full transition-transform duration-300 ease-in-out group-hover:-translate-y-2 group-hover:drop-shadow-xl drop-shadow-black'
         >
-          Built for <span className='text-[#01a0a0]'>ErsatzTV</span>
+          Built for <span className='text-primary'>ErsatzTV</span>
         </a>
       </div>
     </div>
