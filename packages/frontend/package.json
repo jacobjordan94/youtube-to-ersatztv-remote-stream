@@ -14,7 +14,7 @@
     "test:coverage": "vitest --coverage",
     "type-check": "tsc --noEmit",
     "lint": "eslint src --ext .ts,.tsx",
-    "deploy": "vite build && wrangler pages deploy dist"
+    "deploy": "vite build && wrangler pages deploy dist --project-name=yt-to-ersatztv"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.0.4",
