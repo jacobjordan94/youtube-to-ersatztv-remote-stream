@@ -1,4 +1,4 @@
-name = "ersatztv-to-yt-api"
+name = "youtube-to-ersatztv-api"
 main = "src/index.ts"
 compatibility_date = "2024-01-15"
 
