@@ -2,19 +2,13 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src",
-    "types": ["@cloudflare/workers-types"],
+    "types": ["@cloudflare/workers-types", "vitest/globals"],
     "jsx": "react",
     "moduleResolution": "bundler",
     "module": "ESNext",
     "target": "ES2022",
     "lib": ["ES2022"]
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"],
-  "references": [
-    {
-      "path": "../shared"
-    }
-  ]
+  "include": ["src/**/*", "__tests__/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

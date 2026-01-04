@@ -5,6 +5,9 @@ node_modules/
 
 # Testing
 coverage/
+.nyc_output/
+*.lcov
+.vitest/
 
 # Production
 dist/
@@ -48,3 +51,4 @@ wrangler.toml.backup
 # Misc
 .cache/
 .temp/
+.claude/

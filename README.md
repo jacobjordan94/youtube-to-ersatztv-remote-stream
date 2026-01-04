@@ -1,292 +1,119 @@
 # YouTube to ErsatzTV Remote Stream Converter
 
-A web application that converts YouTube URLs into ErsatzTV-compatible remote stream YAML files. Built with a modern monorepo architecture using React, Hono, and Cloudflare Workers.
+![Version](https://img.shields.io/github/package-json/v/jacobjordan94/youtube-to-ersatztv-remote-stream) ![License](https://img.shields.io/github/license/jacobjordan94/youtube-to-ersatztv-remote-stream) ![Node](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen) ![pnpm](https://img.shields.io/badge/pnpm-8.15.1-orange) ![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-blue) ![React](https://img.shields.io/badge/React-18.2.0-blue)
 
-## Features (MVP - Phase 1)
+Convert YouTube videos and playlists to ErsatzTV-compatible YAML files. Built with React, TypeScript, and deployed on Cloudflare's edge network.
 
-- ✅ Convert YouTube video URLs to ErsatzTV YAML format
-- ✅ Automatic metadata extraction (title, duration, live status)
-- ✅ Configurable duration inclusion
-- ✅ Customizable yt-dlp script options
-- ✅ Real-time YAML preview
-- ✅ One-click YAML file download
-- ✅ YouTube API integration with caching
-- ✅ Edge-deployed backend for global performance
+## Features
+
+- YouTube video and playlist conversion with metadata extraction
+- Real-time YAML preview with syntax highlighting
+- Playlist modes: global settings or per-file customization
+- Multiple download formats: single file, ZIP archive, or queue
+- 4 duration modes: none, custom, API, or API-padded (rounded intervals)
+- 6 filename formats: original, compact, kebab, snake, sequential prefix/suffix
+- Optional title and description inclusion with formatting options
+- Customizable yt-dlp script options with validation
 
 ## Tech Stack
 
-### Frontend
-- **React 18** with TypeScript
-- **Vite** for fast builds
-- **TailwindCSS** for styling
-- **shadcn/ui** for UI components
-- **Cloudflare Pages** for deployment
-
-### Backend
-- **Hono** web framework
-- **Cloudflare Workers** for serverless compute
-- **Cloudflare KV** for caching (optional)
-- **YouTube Data API v3** integration
-
-### Monorepo
-- **pnpm** workspaces
-- **TypeScript** for type safety across packages
-- Shared types and utilities package
-
-## Project Structure
-
-```
-youtube-to-ersatztv-stream/
-├── packages/
-│   ├── frontend/          # React application
-│   ├── backend/           # Hono API
-│   └── shared/            # Shared types and utilities
-├── package.json           # Root package.json
-├── pnpm-workspace.yaml    # Workspace configuration
-└── README.md
-```
+**Frontend:** React 18, TypeScript, Vite, TailwindCSS, shadcn/ui
+**Backend:** Hono, Cloudflare Workers, YouTube Data API v3, Zod
+**Monorepo:** pnpm workspaces with shared types package
 
 ## Prerequisites
 
-- **Node.js** 20 LTS or higher
-- **pnpm** 8.0.0 or higher
-- **YouTube Data API v3 Key** (get one from [Google Cloud Console](https://console.cloud.google.com/apis/credentials))
+- Node.js ≥20.0.0
+- pnpm ≥8.0.0
+- [YouTube Data API v3 Key](https://console.cloud.google.com/apis/credentials)
 
-## Installation
-
-1. **Install pnpm** (if not already installed):
-   ```bash
-   npm install -g pnpm
-   ```
-
-2. **Install dependencies**:
-   ```bash
-   pnpm install
-   ```
-
-3. **Configure environment variables**:
-
-   **Backend** (`packages/backend/.dev.vars`):
-   ```bash
-   cp packages/backend/.dev.vars.example packages/backend/.dev.vars
-   # Edit .dev.vars and add your YouTube API key
-   ```
-
-   **Frontend** (`packages/frontend/.env`):
-   ```bash
-   # Already created with default values
-   VITE_API_URL=http://localhost:8787
-   ```
-
-## Development
-
-### Start Both Frontend and Backend
+## Quick Start
 
 ```bash
+# Install pnpm
+npm install -g pnpm
+
+# Install dependencies
+pnpm install
+
+# Configure backend API key
+cp packages/backend/.dev.vars.example packages/backend/.dev.vars
+# Edit .dev.vars and add YOUTUBE_API_KEY
+
+# Start development servers
 pnpm dev
 ```
 
-This will start:
-- Frontend at http://localhost:5173
-- Backend at http://localhost:8787
-
-### Start Individually
-
-```bash
-# Frontend only
-pnpm dev:frontend
-
-# Backend only
-pnpm dev:backend
-```
-
-### Other Commands
-
-```bash
-# Build all packages
-pnpm build
-
-# Type checking
-pnpm type-check
-
-# Lint code
-pnpm lint
-
-# Format code
-pnpm format
-```
-
-## Configuration
-
-### YouTube API Key Setup
-
-1. Go to [Google Cloud Console](https://console.cloud.google.com/)
-2. Create a new project or select existing one
-3. Enable the **YouTube Data API v3**
-4. Create credentials (API key)
-5. Copy the API key to `packages/backend/.dev.vars`:
-   ```
-   YOUTUBE_API_KEY=your_api_key_here
-   ```
-
-### Cloudflare KV Setup (Optional, for Production)
-
-```bash
-# Login to Cloudflare
-npx wrangler login
-
-# Create KV namespace
-cd packages/backend
-npx wrangler kv:namespace create CACHE
-npx wrangler kv:namespace create CACHE --preview
-
-# Update wrangler.toml with the namespace IDs
-```
-
-## Deployment
-
-### Backend Deployment (Cloudflare Workers)
-
-```bash
-# Set production secrets
-cd packages/backend
-npx wrangler secret put YOUTUBE_API_KEY
-
-# Deploy
-pnpm deploy:backend
-```
-
-### Frontend Deployment (Cloudflare Pages)
-
-```bash
-# Build and deploy
-pnpm deploy:frontend
-```
-
-Or connect your GitHub repository to Cloudflare Pages for automatic deployments.
-
-### Environment Variables for Production
-
-Update `packages/frontend/.env` with your production API URL:
-```
-VITE_API_URL=https://your-api.workers.dev
-```
+Frontend: http://localhost:5173
+Backend: http://localhost:8787
 
 ## Usage
 
-1. Open the application in your browser
-2. Enter a YouTube video URL
-3. Configure options:
-   - Toggle "Always include duration" if needed
-   - Customize script options (default: `--hls-use-mpegts`)
-4. Click "Convert"
-5. Preview the generated YAML
-6. Click "Download YAML" to save the file
+**Single Video:**
+1. Enter YouTube URL
+2. Configure duration, filename format, and options
+3. Preview and download YAML
 
-### Example YAML Output
+**Playlist:**
+1. Enter playlist URL
+2. Choose global or per-file settings mode
+3. Configure each video (per-file mode)
+4. Download as current file, ZIP, or queue
 
-**VOD Video (duration omitted)**:
-```yaml
-script: "yt-dlp https://youtube.com/watch?v=dQw4w9WgXcQ --hls-use-mpegts -o -"
-is_live: false
-```
+## Example Output
 
-**VOD Video (duration included)**:
 ```yaml
 script: "yt-dlp https://youtube.com/watch?v=dQw4w9WgXcQ --hls-use-mpegts -o -"
 is_live: false
 duration: 00:03:33
-```
-
-**Live Stream**:
-```yaml
-script: "yt-dlp https://youtube.com/watch?v=jfKfPfyJRdk --hls-use-mpegts -o -"
-is_live: true
-duration: 02:00:00
+title: "Video Title"
+description: "Video description"
 ```
 
 ## API Endpoints
 
-### POST `/api/convert`
-Convert a single YouTube video URL to YAML.
+**POST `/api/convert`** - Convert single video
+**POST `/api/convert/playlist`** - Get playlist video IDs
+**GET `/health`** - Health check
 
-**Request**:
-```json
-{
-  "url": "https://youtube.com/watch?v=VIDEO_ID",
-  "includeDuration": false,
-  "scriptOptions": "--hls-use-mpegts"
-}
-```
+See full API documentation in the codebase or use the web interface.
 
-**Response**:
-```json
-{
-  "yaml": "script: \"...\"\nis_live: false",
-  "metadata": {
-    "title": "Video Title",
-    "duration": "00:03:33",
-    "isLive": false,
-    "videoId": "VIDEO_ID"
-  }
-}
-```
+## Deployment
 
-### GET `/health`
-Health check endpoint.
-
-## Troubleshooting
-
-### "YouTube API error: 403"
-- Check that your API key is correct
-- Verify that YouTube Data API v3 is enabled in Google Cloud Console
-- Check API quota limits
-
-### "Failed to convert video"
-- Ensure the YouTube URL is valid
-- Check that the video is not private or deleted
-- Verify backend is running and accessible
-
-### TypeScript errors
 ```bash
-pnpm type-check
+# Backend (Cloudflare Workers)
+cd packages/backend
+npx wrangler secret put YOUTUBE_API_KEY
+pnpm deploy:backend
+
+# Frontend (Cloudflare Pages)
+pnpm deploy:frontend
 ```
 
-### Cache issues
-Clear Cloudflare KV cache or restart local dev server.
+Update `packages/frontend/.env` with production API URL.
 
-## Future Enhancements (Planned)
+## Development Commands
 
-### Phase 2
-- Playlist support
-- ZIP archive downloads
-- Enhanced YAML preview with syntax highlighting
+```bash
+pnpm dev           # Start both frontend and backend
+pnpm build         # Build all packages
+pnpm type-check    # TypeScript validation
+pnpm lint          # Lint code
+pnpm format        # Format code
+```
 
-### Phase 3
-- Advanced script validation
-- Batch processing optimization
-- User preferences storage
+## Related Resources
 
-## Contributing
-
-This is currently a solo project. If you'd like to contribute, please open an issue first to discuss proposed changes.
+- [ErsatzTV](https://ersatztv.org) - Media server this tool supports
+- [ErsatzTV Docs](https://ersatztv.org/docs/) - Official documentation
+- [Remote Streams Guide](https://ersatztv.org/docs/media/local/remotestreams/)
+- [yt-dlp](https://github.com/yt-dlp/yt-dlp) - Download tool used by ErsatzTV
 
 ## License
 
-MIT License - See LICENSE file for details
-
-## Related Projects
-
-- [ErsatzTV](https://ersatztv.org) - The media server this tool is designed for
-- [yt-dlp](https://github.com/yt-dlp/yt-dlp) - The download tool used by ErsatzTV
+MIT - See [LICENSE](LICENSE) file
 
 ## Support
 
-For issues and questions:
-- Check the [ErsatzTV Documentation](https://ersatztv.org/docs/)
-- Review [Remote Stream Samples](https://ersatztv.org/docs/media/local/remotestreams/sample)
-- Open an issue on GitHub
-
----
-
-**Built with ❤️ for the ErsatzTV community**
+- [ErsatzTV Documentation](https://ersatztv.org/docs/)
+- [GitHub Issues](https://github.com/jacobjordan94/youtube-to-ersatztv-remote-stream/issues)

@@ -4,6 +4,7 @@ import { convertIso8601ToDuration } from '../utils/formatters';
 import {
   VideoMetadata,
   YouTubeApiResponse,
+  YouTubePlaylistResponse,
   YOUTUBE_API,
   CACHE_TTL
 } from '@youtube-to-ersatztv/shared';
@@ -37,11 +38,16 @@ export async function getVideoMetadata(
   }
 
   const video = data.items[0];
-  const isLive = !!(video.liveStreamingDetails?.actualStartTime ||
-                    video.liveStreamingDetails?.scheduledStartTime);
+  // A video is only considered "live" if it has started but hasn't ended yet
+  // If it has actualEndTime, it's a finished livestream (now a VOD)
+  const isLive = !!(
+    video.liveStreamingDetails?.actualStartTime &&
+    !video.liveStreamingDetails?.actualEndTime
+  );
 
   const metadata: VideoMetadata = {
     title: video.snippet.title,
+    description: video.snippet.description,
     duration: convertIso8601ToDuration(video.contentDetails.duration),
     isLive,
     videoId,
@@ -83,7 +89,7 @@ export async function getPlaylistVideoIds(
       throw new Error(`YouTube API error: ${response.status} ${response.statusText}`);
     }
 
-    const data = await response.json();
+    const data: YouTubePlaylistResponse = await response.json();
 
     if (!data.items || data.items.length === 0) {
       break;

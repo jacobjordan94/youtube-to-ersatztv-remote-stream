@@ -9,6 +9,7 @@
     "dev:backend": "pnpm --filter backend dev",
     "build": "pnpm --filter \"./packages/**\" build",
     "test": "pnpm --filter \"./packages/**\" test",
+    "test:coverage": "pnpm --filter \"./packages/**\" test:coverage",
     "lint": "pnpm --filter \"./packages/**\" lint",
     "format": "prettier --write \"packages/**/*.{ts,tsx,json,md}\"",
     "deploy": "pnpm deploy:backend && pnpm deploy:frontend",

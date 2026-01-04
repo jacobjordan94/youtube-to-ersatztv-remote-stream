@@ -2,6 +2,7 @@ export interface YouTubeVideoDetails {
   id: string;
   snippet: {
     title: string;
+    description: string;
   };
   contentDetails: {
     duration: string;
@@ -9,6 +10,7 @@ export interface YouTubeVideoDetails {
   liveStreamingDetails?: {
     scheduledStartTime?: string;
     actualStartTime?: string;
+    actualEndTime?: string;
   };
 }
 

@@ -13,3 +13,22 @@ export function convertIso8601ToDuration(iso8601: string): string {
     .map((v) => String(v).padStart(2, '0'))
     .join(':');
 }
+
+export function padDurationToInterval(duration: string, intervalMinutes: number): string {
+  // Parse HH:MM:SS format
+  const [hours, minutes, seconds] = duration.split(':').map(Number);
+
+  // Convert to total minutes
+  const totalMinutes = hours * 60 + minutes + (seconds > 0 ? 1 : 0);
+
+  // Round up to nearest interval
+  const paddedMinutes = Math.ceil(totalMinutes / intervalMinutes) * intervalMinutes;
+
+  // Convert back to HH:MM:SS
+  const paddedHours = Math.floor(paddedMinutes / 60);
+  const paddedMins = paddedMinutes % 60;
+
+  return [paddedHours, paddedMins, 0]
+    .map((v) => String(v).padStart(2, '0'))
+    .join(':');
+}

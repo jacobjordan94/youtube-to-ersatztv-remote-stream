@@ -7,7 +7,7 @@ health.get('/', (c) => {
   return c.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
-    environment: c.env.ENVIRONMENT || 'development',
+    environment: c.env?.ENVIRONMENT || 'development',
   });
 });
 

@@ -1,11 +1,16 @@
+export type DurationMode = 'none' | 'custom' | 'api' | 'api-padded';
+
 export interface ConvertVideoRequest {
   url: string;
-  includeDuration: boolean;
+  durationMode: DurationMode;
   scriptOptions: string;
+  customDuration?: string;
+  paddingInterval?: number;
 }
 
 export interface VideoMetadata {
   title: string;
+  description: string;
   duration: string;
   isLive: boolean;
   videoId: string;
@@ -24,8 +29,10 @@ export interface PlaylistVideo {
 
 export interface ConvertPlaylistRequest {
   url: string;
-  includeDuration: boolean;
+  durationMode: DurationMode;
   scriptOptions: string;
+  customDuration?: string;
+  paddingInterval?: number;
 }
 
 export interface ConvertPlaylistResponse {

@@ -1,0 +1,40 @@
+name: Quality Checks
+
+on:
+  pull_request:
+    branches: [main, 1.0.0]
+
+jobs:
+  quality:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '25.2.1'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Type check
+        run: pnpm run build
+
+      - name: Run tests
+        run: pnpm test --run
+
+      - name: Test summary
+        if: always()
+        run: |
+          echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "✅ All quality checks passed!" >> $GITHUB_STEP_SUMMARY

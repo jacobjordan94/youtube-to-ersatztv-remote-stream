@@ -18,6 +18,19 @@ export async function convertVideo(request: ConvertVideoRequest): Promise<Conver
 
   if (!response.ok) {
     const error = await response.json();
+
+    // Enhanced error message for rate limiting
+    if (response.status === 429) {
+      const retryAfter = response.headers.get('Retry-After');
+      const message = error.message || 'Rate limit exceeded';
+
+      if (retryAfter) {
+        throw new Error(`${message} Please wait ${retryAfter} seconds before trying again.`);
+      }
+
+      throw new Error(message);
+    }
+
     throw new Error(error.message || 'Failed to convert video');
   }
 
@@ -37,6 +50,19 @@ export async function convertPlaylist(
 
   if (!response.ok) {
     const error = await response.json();
+
+    // Enhanced error message for rate limiting
+    if (response.status === 429) {
+      const retryAfter = response.headers.get('Retry-After');
+      const message = error.message || 'Rate limit exceeded';
+
+      if (retryAfter) {
+        throw new Error(`${message} Please wait ${retryAfter} seconds before trying again.`);
+      }
+
+      throw new Error(message);
+    }
+
     throw new Error(error.message || 'Failed to convert playlist');
   }
 
