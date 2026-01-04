@@ -1,4 +1,4 @@
-name = "ersatztv-api"
+name = "ersatztv-to-yt-api"
 main = "src/index.ts"
 compatibility_date = "2024-01-15"
 
@@ -10,10 +10,10 @@ ENVIRONMENT = "production"
 # npx wrangler kv:namespace create CACHE
 # npx wrangler kv:namespace create CACHE --preview
 
-# [[kv_namespaces]]
-# binding = "CACHE"
-# id = "your-kv-namespace-id"
-# preview_id = "your-preview-kv-namespace-id"
+[[kv_namespaces]]
+binding = "CACHE"
+id = "0d207bbcdd1f43348f1dbfa5dc514115"
+preview_id = "eda5d73e492f487da62d0368cc46a5de"
 
 # Secrets to set via: wrangler secret put YOUTUBE_API_KEY
 # - YOUTUBE_API_KEY
