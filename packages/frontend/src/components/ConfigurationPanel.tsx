@@ -118,7 +118,7 @@ export function ConfigurationPanel({
           <div className="flex items-center justify-between mb-3">
             <Label className="text-white font-semibold truncate leading-1">{panelTitle}</Label>
             {/* Navigation Buttons - Playlist mode */}
-            {playlistVideos.length > 0 && (
+            {isPlaylist && (
               <div className="flex gap-2 ml-4">
                 <Button
                   onClick={() => onVideoChange(selectedVideoIndex - 1)}
