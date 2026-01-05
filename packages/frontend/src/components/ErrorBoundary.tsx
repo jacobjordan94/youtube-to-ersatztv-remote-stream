@@ -80,7 +80,7 @@ export class ErrorBoundary extends Component<Props, State> {
     );
 
     window.open(
-      `https://github.com/yourusername/youtube-to-ersatztv-stream/issues/new?title=${title}&body=${body}`,
+      `https://github.com/jacobjordan94/youtube-to-ersatztv-remote-stream/issues/new?title=${title}&body=${body}`,
       '_blank'
     );
   };
