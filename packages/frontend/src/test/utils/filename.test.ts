@@ -99,8 +99,8 @@ describe('formatFilename', () => {
       expect(formatFilename('My Video', 'sequential-prefix', 999)).toBe('1000-my-video');
     });
 
-    it('should throw error if index not provided', () => {
-      expect(() => formatFilename('My Video', 'sequential-prefix')).toThrow('Index required');
+    it('should fall back to compact format if index not provided', () => {
+      expect(formatFilename('My Video', 'sequential-prefix')).toBe('my-video');
     });
 
     it('should use compact format for base filename', () => {
@@ -123,8 +123,8 @@ describe('formatFilename', () => {
       expect(formatFilename('My Video', 'sequential-suffix', 999)).toBe('my-video-1000');
     });
 
-    it('should throw error if index not provided', () => {
-      expect(() => formatFilename('My Video', 'sequential-suffix')).toThrow('Index required');
+    it('should fall back to compact format if index not provided', () => {
+      expect(formatFilename('My Video', 'sequential-suffix')).toBe('my-video');
     });
 
     it('should use compact format for base filename', () => {

@@ -51,12 +51,26 @@ export function formatFilename(
       break;
 
     case 'sequential-prefix':
-      if (index === undefined) throw new Error('Index required for sequential format');
+      if (index === undefined) {
+        // If no index provided, fall back to compact format
+        formatted = title
+          .replace(/[^a-z0-9\s-]/gi, '')
+          .replace(/\s+/g, '-')
+          .toLowerCase();
+        break;
+      }
       const prefixBase = formatFilename(title, 'compact', undefined, maxLength - 4);
       return `${String(index + 1).padStart(3, '0')}-${prefixBase}`;
 
     case 'sequential-suffix':
-      if (index === undefined) throw new Error('Index required for sequential format');
+      if (index === undefined) {
+        // If no index provided, fall back to compact format
+        formatted = title
+          .replace(/[^a-z0-9\s-]/gi, '')
+          .replace(/\s+/g, '-')
+          .toLowerCase();
+        break;
+      }
       const suffixBase = formatFilename(title, 'compact', undefined, maxLength - 4);
       return `${suffixBase}-${String(index + 1).padStart(3, '0')}`;
   }

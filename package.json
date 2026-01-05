@@ -1,7 +1,6 @@
 {
   "name": "youtube-to-ersatztv",
-  "version": "1.0.0",
-  "private": true,
+  "version": "1.0.1",
   "description": "Web application for converting YouTube URLs to ErsatzTV-compatible remote stream YAML files",
   "scripts": {
     "dev": "pnpm --parallel --filter \"./packages/**\" dev",

@@ -284,7 +284,7 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
 
       // If switching TO per-file, initialize state
       if (newMode === 'per-file') {
-        const newSettings = new Map();
+        const newSettings = new Map<number, ConfigSettings>();
         newSettings.set(selectedVideoIndex, getCurrentSettings());
         setPerFileSettings(newSettings);
         setVisitedFiles(new Set([selectedVideoIndex]));
@@ -397,7 +397,7 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
       {yamlPreview && videoTitle && (
         <>
           {/* Mode Toggle - Only in playlist mode */}
-          {playlistVideos.length > 0 && (
+          {isPlaylist && (
             <SettingsModeToggle
               settingsMode={settingsMode}
               onModeToggle={handleModeToggle}
@@ -414,15 +414,12 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
 
           <YamlPreview
             yaml={yamlPreview}
-            filename={`${formatFilename(
-              videoTitle || '',
-              filenameFormat,
-              playlistVideos.length > 1 &&
-                (filenameFormat === 'sequential-prefix' || filenameFormat === 'sequential-suffix')
-                ? selectedVideoIndex
-                : undefined
-            )}.yml`}
-            playlistVideos={playlistVideos.length > 0 ? playlistVideos : undefined}
+            filename={
+              isPlaylist && playlistVideos[selectedVideoIndex]
+                ? playlistVideos[selectedVideoIndex].filename
+                : `${formatFilename(videoTitle || '', filenameFormat)}.yml`
+            }
+            playlistVideos={isPlaylist ? playlistVideos : undefined}
             selectedVideoIndex={selectedVideoIndex}
             onVideoChange={handlePlaylistVideoChange}
             visitedFiles={settingsMode === 'per-file' ? visitedFiles : undefined}

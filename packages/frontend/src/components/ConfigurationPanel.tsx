@@ -100,12 +100,14 @@ export function ConfigurationPanel({
 }: ConfigurationPanelProps) {
   // Determine panel header title
   let panelTitle: string;
-  if (playlistVideos.length === 0) {
+  if (!isPlaylist) {
     panelTitle = 'Configuration Options';
   } else if (settingsMode === 'global') {
     panelTitle = 'Configuration Options - Global';
   } else {
-    const formatted = videoTitle ? formatFilename(videoTitle, filenameFormat) : 'unknown';
+    const formatted = videoTitle
+      ? formatFilename(videoTitle, filenameFormat, selectedVideoIndex)
+      : 'unknown';
     panelTitle = `Configuration Options - ${formatted}.yml`;
   }
 
@@ -115,15 +117,15 @@ export function ConfigurationPanel({
         <div>
           <div className="flex items-center justify-between mb-3">
             <Label className="text-white font-semibold truncate leading-1">{panelTitle}</Label>
-            {/* Navigation Buttons - Per-file mode only */}
-            {playlistVideos.length > 0 && settingsMode === 'per-file' && (
+            {/* Navigation Buttons - Playlist mode */}
+            {playlistVideos.length > 0 && (
               <div className="flex gap-2 ml-4">
                 <Button
                   onClick={() => onVideoChange(selectedVideoIndex - 1)}
                   disabled={selectedVideoIndex === 0}
                   variant="ghost"
                   size="sm"
-                  className="text-gray-300 hover:text-white"
+                  className="text-gray-300 hover:text-white hover:bg-neutral-700"
                   title={
                     selectedVideoIndex > 0
                       ? playlistVideos[selectedVideoIndex - 1].metadata.title
@@ -138,7 +140,7 @@ export function ConfigurationPanel({
                   disabled={selectedVideoIndex === playlistVideos.length - 1}
                   variant="ghost"
                   size="sm"
-                  className="text-gray-300 hover:text-white"
+                  className="text-gray-300 hover:text-white hover:bg-neutral-700"
                   title={
                     selectedVideoIndex < playlistVideos.length - 1
                       ? playlistVideos[selectedVideoIndex + 1].metadata.title
