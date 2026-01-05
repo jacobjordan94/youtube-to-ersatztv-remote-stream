@@ -162,7 +162,7 @@ export function sanitizeScriptOptions(options: string): ValidationResult {
   }
 
   // Remove null bytes
-  let sanitized = options.replace(/\0/g, '');
+  const sanitized = options.replace(/\0/g, '');
 
   // Check for dangerous patterns
   const dangerousPatterns = [
