@@ -105,9 +105,7 @@ export function ConfigurationPanel({
   } else if (settingsMode === 'global') {
     panelTitle = 'Configuration Options - Global';
   } else {
-    const formatted = videoTitle
-      ? formatFilename(videoTitle, filenameFormat)
-      : 'unknown';
+    const formatted = videoTitle ? formatFilename(videoTitle, filenameFormat) : 'unknown';
     panelTitle = `Configuration Options - ${formatted}.yml`;
   }
 
@@ -116,9 +114,7 @@ export function ConfigurationPanel({
       <div className="space-y-6">
         <div>
           <div className="flex items-center justify-between mb-3">
-            <Label className="text-white font-semibold truncate leading-1">
-              {panelTitle}
-            </Label>
+            <Label className="text-white font-semibold truncate leading-1">{panelTitle}</Label>
             {/* Navigation Buttons - Per-file mode only */}
             {playlistVideos.length > 0 && settingsMode === 'per-file' && (
               <div className="flex gap-2 ml-4">
@@ -128,7 +124,11 @@ export function ConfigurationPanel({
                   variant="ghost"
                   size="sm"
                   className="text-gray-300 hover:text-white"
-                  title={selectedVideoIndex > 0 ? playlistVideos[selectedVideoIndex - 1].metadata.title : ''}
+                  title={
+                    selectedVideoIndex > 0
+                      ? playlistVideos[selectedVideoIndex - 1].metadata.title
+                      : ''
+                  }
                 >
                   <ChevronLeft className="w-4 h-4 mr-1" />
                   Prev
@@ -139,7 +139,11 @@ export function ConfigurationPanel({
                   variant="ghost"
                   size="sm"
                   className="text-gray-300 hover:text-white"
-                  title={selectedVideoIndex < playlistVideos.length - 1 ? playlistVideos[selectedVideoIndex + 1].metadata.title : ''}
+                  title={
+                    selectedVideoIndex < playlistVideos.length - 1
+                      ? playlistVideos[selectedVideoIndex + 1].metadata.title
+                      : ''
+                  }
                 >
                   Next
                   <ChevronRight className="w-4 h-4 ml-1" />

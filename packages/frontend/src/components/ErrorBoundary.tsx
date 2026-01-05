@@ -69,14 +69,14 @@ export class ErrorBoundary extends Component<Props, State> {
     const title = encodeURIComponent(`Error: ${error?.message || 'Unknown error'}`);
     const body = encodeURIComponent(
       `## Error Details\n\n` +
-      `**Message:** ${error?.message || 'No message'}\n\n` +
-      `**Stack:**\n\`\`\`\n${error?.stack || 'No stack trace'}\n\`\`\`\n\n` +
-      `**Component Stack:**\n\`\`\`\n${errorInfo?.componentStack || 'No component stack'}\n\`\`\`\n\n` +
-      `**Browser:** ${navigator.userAgent}\n\n` +
-      `## Steps to Reproduce\n\n` +
-      `1. \n2. \n3. \n\n` +
-      `## Expected Behavior\n\n` +
-      `## Actual Behavior\n\n`
+        `**Message:** ${error?.message || 'No message'}\n\n` +
+        `**Stack:**\n\`\`\`\n${error?.stack || 'No stack trace'}\n\`\`\`\n\n` +
+        `**Component Stack:**\n\`\`\`\n${errorInfo?.componentStack || 'No component stack'}\n\`\`\`\n\n` +
+        `**Browser:** ${navigator.userAgent}\n\n` +
+        `## Steps to Reproduce\n\n` +
+        `1. \n2. \n3. \n\n` +
+        `## Expected Behavior\n\n` +
+        `## Actual Behavior\n\n`
     );
 
     window.open(
@@ -126,9 +126,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 <div className="space-y-2">
                   <h3 className="text-sm font-semibold text-card-foreground">Error Details:</h3>
                   <div className="bg-muted p-3 rounded-md">
-                    <p className="text-sm font-mono text-destructive break-all">
-                      {error.message}
-                    </p>
+                    <p className="text-sm font-mono text-destructive break-all">{error.message}</p>
                   </div>
                 </div>
               )}
@@ -161,7 +159,8 @@ export class ErrorBoundary extends Component<Props, State> {
 
               <div className="pt-2">
                 <p className="text-sm text-muted-foreground">
-                  You can try reloading the page to recover, or report this issue if the problem persists.
+                  You can try reloading the page to recover, or report this issue if the problem
+                  persists.
                 </p>
               </div>
             </div>

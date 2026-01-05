@@ -1,10 +1,7 @@
 import { Env } from '../types';
 import { CACHE_TTL } from '@youtube-to-ersatztv/shared';
 
-export async function getCachedData<T>(
-  key: string,
-  env: Env
-): Promise<T | null> {
+export async function getCachedData<T>(key: string, env: Env): Promise<T | null> {
   if (!env.CACHE) {
     return null;
   }

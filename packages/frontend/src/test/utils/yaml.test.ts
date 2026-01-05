@@ -130,7 +130,9 @@ describe('generateYaml', () => {
         durationMode: 'none',
       });
 
-      expect(yaml).toContain('script: "yt-dlp https://youtube.com/watch?v=dQw4w9WgXcQ --hls-use-mpegts -o -"');
+      expect(yaml).toContain(
+        'script: "yt-dlp https://youtube.com/watch?v=dQw4w9WgXcQ --hls-use-mpegts -o -"'
+      );
       expect(yaml).toContain('is_live: false');
       expect(yaml).not.toContain('duration:');
     });
@@ -297,7 +299,9 @@ describe('generateYaml', () => {
         scriptOptions: '--no-warnings --hls-use-mpegts',
       });
 
-      expect(yaml).toContain('yt-dlp https://youtube.com/watch?v=dQw4w9WgXcQ --no-warnings --hls-use-mpegts -o -');
+      expect(yaml).toContain(
+        'yt-dlp https://youtube.com/watch?v=dQw4w9WgXcQ --no-warnings --hls-use-mpegts -o -'
+      );
     });
 
     it('should always include -o - flag', () => {

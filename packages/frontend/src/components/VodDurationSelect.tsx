@@ -51,7 +51,9 @@ export function VodDurationSelect({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="none">No duration</SelectItem>
-            <SelectItem value="custom" disabled={isPlaylist}>Custom duration (manual input)</SelectItem>
+            <SelectItem value="custom" disabled={isPlaylist}>
+              Custom duration (manual input)
+            </SelectItem>
             <SelectItem value="api">Duration from YouTube</SelectItem>
             <SelectItem value="api-padded">Duration from YouTube (padded)</SelectItem>
           </SelectContent>
@@ -87,9 +89,7 @@ export function VodDurationSelect({
             placeholder="01:23:45"
             className="font-mono text-sm"
           />
-          {durationError && (
-            <p className="text-xs text-red-400">{durationError}</p>
-          )}
+          {durationError && <p className="text-xs text-red-400">{durationError}</p>}
         </div>
       )}
 

@@ -70,8 +70,12 @@ function App() {
           url: url.trim(),
           durationMode: initialSettings.durationMode,
           scriptOptions: sanitizedScriptOptions,
-          customDuration: initialSettings.durationMode === 'custom' ? initialSettings.customDuration : undefined,
-          paddingInterval: initialSettings.durationMode === 'api-padded' ? initialSettings.paddingInterval : undefined,
+          customDuration:
+            initialSettings.durationMode === 'custom' ? initialSettings.customDuration : undefined,
+          paddingInterval:
+            initialSettings.durationMode === 'api-padded'
+              ? initialSettings.paddingInterval
+              : undefined,
         });
 
         if (response.videos.length === 0) {
@@ -111,8 +115,12 @@ function App() {
           url: url.trim(),
           durationMode: initialSettings.durationMode,
           scriptOptions: sanitizedScriptOptions,
-          customDuration: initialSettings.durationMode === 'custom' ? initialSettings.customDuration : undefined,
-          paddingInterval: initialSettings.durationMode === 'api-padded' ? initialSettings.paddingInterval : undefined,
+          customDuration:
+            initialSettings.durationMode === 'custom' ? initialSettings.customDuration : undefined,
+          paddingInterval:
+            initialSettings.durationMode === 'api-padded'
+              ? initialSettings.paddingInterval
+              : undefined,
         });
 
         // Store clean URL constructed from video ID

@@ -430,10 +430,7 @@ describe('Download Playlist Utilities', () => {
 
       downloadCurrent(mockVideo);
 
-      expect(downloadModule.downloadFile).toHaveBeenCalledWith(
-        'isLive: true',
-        'livestream.yaml'
-      );
+      expect(downloadModule.downloadFile).toHaveBeenCalledWith('isLive: true', 'livestream.yaml');
     });
 
     it('should handle video with special characters in YAML', () => {
@@ -451,10 +448,7 @@ describe('Download Playlist Utilities', () => {
 
       downloadCurrent(mockVideo);
 
-      expect(downloadModule.downloadFile).toHaveBeenCalledWith(
-        mockVideo.yaml,
-        'special.yaml'
-      );
+      expect(downloadModule.downloadFile).toHaveBeenCalledWith(mockVideo.yaml, 'special.yaml');
     });
   });
 });

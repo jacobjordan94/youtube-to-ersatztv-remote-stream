@@ -18,7 +18,8 @@ export function rateLimit(options: RateLimitOptions) {
   const { windowMs, maxRequests } = options;
 
   return async (c: Context<{ Bindings: Env }>, next: Next) => {
-    const clientIP = c.req.header('cf-connecting-ip') || c.req.header('x-forwarded-for') || 'unknown';
+    const clientIP =
+      c.req.header('cf-connecting-ip') || c.req.header('x-forwarded-for') || 'unknown';
     const now = Date.now();
 
     // Clean up expired entries
@@ -79,13 +80,17 @@ export function cloudflareRateLimit(options: RateLimitOptions) {
       return rateLimit(options)(c, next);
     }
 
-    const clientIP = c.req.header('cf-connecting-ip') || c.req.header('x-forwarded-for') || 'unknown';
+    const clientIP =
+      c.req.header('cf-connecting-ip') || c.req.header('x-forwarded-for') || 'unknown';
     const rateLimitKey = `ratelimit:${clientIP}`;
     const now = Date.now();
 
     try {
       // Get current count from KV
-      const stored = await env.CACHE.get(rateLimitKey, 'json') as { count: number; resetAt: number } | null;
+      const stored = (await env.CACHE.get(rateLimitKey, 'json')) as {
+        count: number;
+        resetAt: number;
+      } | null;
 
       let count = 1;
       let resetAt = now + windowMs;
@@ -114,11 +119,7 @@ export function cloudflareRateLimit(options: RateLimitOptions) {
 
       // Store updated count
       const ttl = Math.ceil((resetAt - now) / 1000);
-      await env.CACHE.put(
-        rateLimitKey,
-        JSON.stringify({ count, resetAt }),
-        { expirationTtl: ttl }
-      );
+      await env.CACHE.put(rateLimitKey, JSON.stringify({ count, resetAt }), { expirationTtl: ttl });
 
       // Add rate limit headers
       c.header('X-RateLimit-Limit', maxRequests.toString());

@@ -26,10 +26,7 @@ export function generateYaml(
         config.duration = metadata.duration;
         break;
       case 'api-padded':
-        config.duration = padDurationToInterval(
-          metadata.duration,
-          options.paddingInterval!
-        );
+        config.duration = padDurationToInterval(metadata.duration, options.paddingInterval!);
         break;
       case 'none':
         // Only include duration for live streams

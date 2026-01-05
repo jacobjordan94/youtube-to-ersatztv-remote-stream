@@ -62,18 +62,10 @@ export function InputScreen({
         <div>
           <div className="flex gap-2">
             <div className="flex-1">
-              <UrlInput
-                url={url}
-                onUrlChange={handleUrlChange}
-                disabled={loading}
-              />
+              <UrlInput url={url} onUrlChange={handleUrlChange} disabled={loading} />
             </div>
             <div className="flex">
-              <PasteButton
-                onPaste={handlePaste}
-                disabled={loading}
-                className="mt-[22px]"
-              />
+              <PasteButton onPaste={handlePaste} disabled={loading} className="mt-[22px]" />
             </div>
           </div>
         </div>

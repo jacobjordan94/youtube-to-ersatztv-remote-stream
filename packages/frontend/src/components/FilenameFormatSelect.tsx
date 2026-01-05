@@ -26,11 +26,7 @@ export function FilenameFormatSelect({
       <Label htmlFor="filename-format" className="text-white">
         Filename Format
       </Label>
-      <Select
-        value={filenameFormat}
-        onValueChange={onFilenameFormatChange}
-        disabled={disabled}
-      >
+      <Select value={filenameFormat} onValueChange={onFilenameFormatChange} disabled={disabled}>
         <SelectTrigger id="filename-format">
           <SelectValue />
         </SelectTrigger>

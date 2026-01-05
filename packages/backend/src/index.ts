@@ -12,13 +12,14 @@ app.use('/*', (c, next) => {
 
   // Development: Allow localhost
   // Production: Only allow specific domain
-  const allowedOrigins = env === 'production'
-    ? ['https://youtube-to-ersatztv.jacob-jordan.me']
-    : [
-        'http://localhost:5173',
-        'http://localhost:3000',
-        'https://youtube-to-ersatztv.jacob-jordan.me',
-      ];
+  const allowedOrigins =
+    env === 'production'
+      ? ['https://youtube-to-ersatztv.jacob-jordan.me']
+      : [
+          'http://localhost:5173',
+          'http://localhost:3000',
+          'https://youtube-to-ersatztv.jacob-jordan.me',
+        ];
 
   return cors({
     origin: allowedOrigins,
@@ -33,7 +34,10 @@ app.use('/*', async (c, next) => {
   await next();
 
   // Content Security Policy
-  c.header('Content-Security-Policy', "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self'");
+  c.header(
+    'Content-Security-Policy',
+    "default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self'"
+  );
 
   // Prevent clickjacking
   c.header('X-Frame-Options', 'DENY');

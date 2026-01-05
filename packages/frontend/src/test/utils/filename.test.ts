@@ -8,7 +8,9 @@ describe('formatFilename', () => {
     });
 
     it('should remove invalid filename characters', () => {
-      expect(formatFilename('Video/With\\Invalid:Chars*?.yml', 'original')).toBe('VideoWithInvalidChars.yml');
+      expect(formatFilename('Video/With\\Invalid:Chars*?.yml', 'original')).toBe(
+        'VideoWithInvalidChars.yml'
+      );
     });
 
     it('should preserve punctuation except invalid chars', () => {
@@ -42,7 +44,9 @@ describe('formatFilename', () => {
     });
 
     it('should handle already-hyphenated text', () => {
-      expect(formatFilename('already-hyphenated-title', 'compact')).toBe('already-hyphenated-title');
+      expect(formatFilename('already-hyphenated-title', 'compact')).toBe(
+        'already-hyphenated-title'
+      );
     });
   });
 
@@ -100,7 +104,9 @@ describe('formatFilename', () => {
     });
 
     it('should use compact format for base filename', () => {
-      expect(formatFilename('My Special! Video@', 'sequential-prefix', 5)).toBe('006-my-special-video');
+      expect(formatFilename('My Special! Video@', 'sequential-prefix', 5)).toBe(
+        '006-my-special-video'
+      );
     });
   });
 
@@ -122,7 +128,9 @@ describe('formatFilename', () => {
     });
 
     it('should use compact format for base filename', () => {
-      expect(formatFilename('My Special! Video@', 'sequential-suffix', 5)).toBe('my-special-video-006');
+      expect(formatFilename('My Special! Video@', 'sequential-suffix', 5)).toBe(
+        'my-special-video-006'
+      );
     });
   });
 
@@ -177,18 +185,19 @@ describe('formatFilename', () => {
 
   describe('real-world examples', () => {
     it('should format YouTube video title correctly', () => {
-      expect(formatFilename('Rick Astley - Never Gonna Give You Up (Official Video)', 'compact'))
-        .toBe('rick-astley---never-gonna-give-you-up-official-video');
+      expect(
+        formatFilename('Rick Astley - Never Gonna Give You Up (Official Video)', 'compact')
+      ).toBe('rick-astley---never-gonna-give-you-up-official-video');
     });
 
     it('should handle playlist video with episode number', () => {
-      expect(formatFilename('Episode 5: The Big Reveal!', 'kebab'))
-        .toBe('Episode-5-The-Big-Reveal!');
+      expect(formatFilename('Episode 5: The Big Reveal!', 'kebab')).toBe(
+        'Episode-5-The-Big-Reveal!'
+      );
     });
 
     it('should format dated video title', () => {
-      expect(formatFilename('Daily Vlog - 2024/01/15', 'snake'))
-        .toBe('daily_vlog_20240115');
+      expect(formatFilename('Daily Vlog - 2024/01/15', 'snake')).toBe('daily_vlog_20240115');
     });
   });
 });

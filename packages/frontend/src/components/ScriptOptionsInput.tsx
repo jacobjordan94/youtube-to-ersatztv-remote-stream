@@ -27,9 +27,7 @@ export function ScriptOptionsInput({
         placeholder="--hls-use-mpegts"
         className="font-mono text-sm"
       />
-      <p className="text-xs text-gray-300 mt-2">
-        Default template: {DEFAULT_SCRIPT_TEMPLATE}
-      </p>
+      <p className="text-xs text-gray-300 mt-2">Default template: {DEFAULT_SCRIPT_TEMPLATE}</p>
     </div>
   );
 }

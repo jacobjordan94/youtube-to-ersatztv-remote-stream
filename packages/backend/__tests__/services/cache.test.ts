@@ -139,9 +139,7 @@ describe('Cache Service', () => {
         JSON.stringify(data),
         { expirationTtl: 3600 } // Default TTL from CACHE_TTL.VIDEO_METADATA
       );
-      expect(consoleLogSpy).toHaveBeenCalledWith(
-        'Cached data for key: test-key (TTL: 3600s)'
-      );
+      expect(consoleLogSpy).toHaveBeenCalledWith('Cached data for key: test-key (TTL: 3600s)');
     });
 
     it('should cache data with custom TTL', async () => {
@@ -151,11 +149,9 @@ describe('Cache Service', () => {
 
       await setCachedData('custom-ttl-key', data, mockEnv, customTtl);
 
-      expect(mockCache.put).toHaveBeenCalledWith(
-        'custom-ttl-key',
-        JSON.stringify(data),
-        { expirationTtl: customTtl }
-      );
+      expect(mockCache.put).toHaveBeenCalledWith('custom-ttl-key', JSON.stringify(data), {
+        expirationTtl: customTtl,
+      });
       expect(consoleLogSpy).toHaveBeenCalledWith(
         'Cached data for key: custom-ttl-key (TTL: 1800s)'
       );
@@ -166,9 +162,7 @@ describe('Cache Service', () => {
       mockCache.put.mockRejectedValue(error);
 
       // Should not throw
-      await expect(
-        setCachedData('error-key', { foo: 'bar' }, mockEnv)
-      ).resolves.toBeUndefined();
+      await expect(setCachedData('error-key', { foo: 'bar' }, mockEnv)).resolves.toBeUndefined();
 
       expect(consoleErrorSpy).toHaveBeenCalledWith('Cache set error:', error);
     });
@@ -188,11 +182,9 @@ describe('Cache Service', () => {
 
       await setCachedData('complex-key', complexData, mockEnv, 300);
 
-      expect(mockCache.put).toHaveBeenCalledWith(
-        'complex-key',
-        JSON.stringify(complexData),
-        { expirationTtl: 300 }
-      );
+      expect(mockCache.put).toHaveBeenCalledWith('complex-key', JSON.stringify(complexData), {
+        expirationTtl: 300,
+      });
     });
 
     it('should handle string data', async () => {
@@ -201,11 +193,9 @@ describe('Cache Service', () => {
 
       await setCachedData('string-key', stringData, mockEnv, 600);
 
-      expect(mockCache.put).toHaveBeenCalledWith(
-        'string-key',
-        JSON.stringify(stringData),
-        { expirationTtl: 600 }
-      );
+      expect(mockCache.put).toHaveBeenCalledWith('string-key', JSON.stringify(stringData), {
+        expirationTtl: 600,
+      });
     });
 
     it('should handle array data', async () => {
@@ -214,11 +204,9 @@ describe('Cache Service', () => {
 
       await setCachedData('array-key', arrayData, mockEnv, 900);
 
-      expect(mockCache.put).toHaveBeenCalledWith(
-        'array-key',
-        JSON.stringify(arrayData),
-        { expirationTtl: 900 }
-      );
+      expect(mockCache.put).toHaveBeenCalledWith('array-key', JSON.stringify(arrayData), {
+        expirationTtl: 900,
+      });
     });
 
     it('should handle network errors gracefully', async () => {
@@ -234,9 +222,7 @@ describe('Cache Service', () => {
     it('should handle quota exceeded errors gracefully', async () => {
       mockCache.put.mockRejectedValue(new Error('Quota exceeded'));
 
-      await expect(
-        setCachedData('quota-key', { large: 'data' }, mockEnv)
-      ).resolves.toBeUndefined();
+      await expect(setCachedData('quota-key', { large: 'data' }, mockEnv)).resolves.toBeUndefined();
 
       expect(consoleErrorSpy).toHaveBeenCalledWith(
         'Cache set error:',
@@ -268,24 +254,15 @@ describe('Cache Service', () => {
       await setCachedData('key3', { c: 3 }, mockEnv, 300);
 
       expect(mockCache.put).toHaveBeenCalledTimes(3);
-      expect(mockCache.put).toHaveBeenNthCalledWith(
-        1,
-        'key1',
-        JSON.stringify({ a: 1 }),
-        { expirationTtl: 100 }
-      );
-      expect(mockCache.put).toHaveBeenNthCalledWith(
-        2,
-        'key2',
-        JSON.stringify({ b: 2 }),
-        { expirationTtl: 200 }
-      );
-      expect(mockCache.put).toHaveBeenNthCalledWith(
-        3,
-        'key3',
-        JSON.stringify({ c: 3 }),
-        { expirationTtl: 300 }
-      );
+      expect(mockCache.put).toHaveBeenNthCalledWith(1, 'key1', JSON.stringify({ a: 1 }), {
+        expirationTtl: 100,
+      });
+      expect(mockCache.put).toHaveBeenNthCalledWith(2, 'key2', JSON.stringify({ b: 2 }), {
+        expirationTtl: 200,
+      });
+      expect(mockCache.put).toHaveBeenNthCalledWith(3, 'key3', JSON.stringify({ c: 3 }), {
+        expirationTtl: 300,
+      });
     });
   });
 });

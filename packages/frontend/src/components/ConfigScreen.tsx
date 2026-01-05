@@ -21,29 +21,45 @@ interface ConfigScreenProps {
   conversionResult: ConversionResult;
 }
 
-export function ConfigScreen({
-  onBack,
-  isPlaylist,
-  conversionResult,
-}: ConfigScreenProps) {
+export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScreenProps) {
   // Configuration state - all settings
-  const [durationMode, setDurationMode] = useState<'none' | 'custom' | 'api' | 'api-padded'>(conversionResult.initialSettings.durationMode);
-  const [customDuration, setCustomDuration] = useState(conversionResult.initialSettings.customDuration);
-  const [paddingInterval, setPaddingInterval] = useState(conversionResult.initialSettings.paddingInterval);
+  const [durationMode, setDurationMode] = useState<'none' | 'custom' | 'api' | 'api-padded'>(
+    conversionResult.initialSettings.durationMode
+  );
+  const [customDuration, setCustomDuration] = useState(
+    conversionResult.initialSettings.customDuration
+  );
+  const [paddingInterval, setPaddingInterval] = useState(
+    conversionResult.initialSettings.paddingInterval
+  );
   const [durationError, setDurationError] = useState<string | null>(null);
-  const [livestreamDuration, setLivestreamDuration] = useState(conversionResult.initialSettings.livestreamDuration);
-  const [customLivestreamDuration, setCustomLivestreamDuration] = useState(conversionResult.initialSettings.customLivestreamDuration);
+  const [livestreamDuration, setLivestreamDuration] = useState(
+    conversionResult.initialSettings.livestreamDuration
+  );
+  const [customLivestreamDuration, setCustomLivestreamDuration] = useState(
+    conversionResult.initialSettings.customLivestreamDuration
+  );
   const [livestreamDurationError, setLivestreamDurationError] = useState<string | null>(null);
   const [includeTitle, setIncludeTitle] = useState(conversionResult.initialSettings.includeTitle);
-  const [includeDescription, setIncludeDescription] = useState(conversionResult.initialSettings.includeDescription);
-  const [descriptionFormat, setDescriptionFormat] = useState<'string' | 'folded' | 'literal'>(conversionResult.initialSettings.descriptionFormat);
-  const [scriptOptions, setScriptOptions] = useState(conversionResult.initialSettings.scriptOptions);
-  const [filenameFormat, setFilenameFormat] = useState<FilenameFormat>(conversionResult.initialSettings.filenameFormat);
+  const [includeDescription, setIncludeDescription] = useState(
+    conversionResult.initialSettings.includeDescription
+  );
+  const [descriptionFormat, setDescriptionFormat] = useState<'string' | 'folded' | 'literal'>(
+    conversionResult.initialSettings.descriptionFormat
+  );
+  const [scriptOptions, setScriptOptions] = useState(
+    conversionResult.initialSettings.scriptOptions
+  );
+  const [filenameFormat, setFilenameFormat] = useState<FilenameFormat>(
+    conversionResult.initialSettings.filenameFormat
+  );
 
   // Video/playlist display state
   const [yamlPreview, setYamlPreview] = useState<string | null>(conversionResult.firstVideo.yaml);
   const [videoTitle, setVideoTitle] = useState<string | null>(conversionResult.firstVideo.title);
-  const [videoMetadata, setVideoMetadata] = useState<VideoMetadata | null>(conversionResult.firstVideo.metadata);
+  const [videoMetadata, setVideoMetadata] = useState<VideoMetadata | null>(
+    conversionResult.firstVideo.metadata
+  );
   const [playlistVideos, setPlaylistVideos] = useState<PlaylistVideo[]>(conversionResult.videos);
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
 
@@ -126,7 +142,7 @@ export function ConfigScreen({
       // If no saved settings and already visited, keep current settings
 
       // Mark file as visited
-      setVisitedFiles(prev => new Set(prev).add(index));
+      setVisitedFiles((prev) => new Set(prev).add(index));
     }
   };
 
@@ -138,7 +154,19 @@ export function ConfigScreen({
       setPerFileSettings(newSettings);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [durationMode, customDuration, paddingInterval, scriptOptions, livestreamDuration, customLivestreamDuration, includeTitle, includeDescription, descriptionFormat, settingsMode, filenameFormat]);
+  }, [
+    durationMode,
+    customDuration,
+    paddingInterval,
+    scriptOptions,
+    livestreamDuration,
+    customLivestreamDuration,
+    includeTitle,
+    includeDescription,
+    descriptionFormat,
+    settingsMode,
+    filenameFormat,
+  ]);
 
   // Regenerate YAML when duration or script settings change
   useEffect(() => {
@@ -150,14 +178,21 @@ export function ConfigScreen({
         const currentSettings = getCurrentSettings();
         updatedVideos = playlistVideos.map((video, index) => {
           const cleanUrl = `https://youtube.com/watch?v=${video.metadata.videoId}`;
-          const newYaml = generateYaml({
-            title: video.metadata.title,
-            description: video.metadata.description,
-            duration: video.metadata.duration,
-            isLive: video.metadata.isLive,
-            videoUrl: cleanUrl,
-          }, currentSettings);
-          const filename = formatFilename(video.metadata.title, currentSettings.filenameFormat, index);
+          const newYaml = generateYaml(
+            {
+              title: video.metadata.title,
+              description: video.metadata.description,
+              duration: video.metadata.duration,
+              isLive: video.metadata.isLive,
+              videoUrl: cleanUrl,
+            },
+            currentSettings
+          );
+          const filename = formatFilename(
+            video.metadata.title,
+            currentSettings.filenameFormat,
+            index
+          );
           return {
             ...video,
             yaml: newYaml,
@@ -169,13 +204,16 @@ export function ConfigScreen({
         updatedVideos = playlistVideos.map((video, index) => {
           const cleanUrl = `https://youtube.com/watch?v=${video.metadata.videoId}`;
           const settings = perFileSettings.get(index) || getCurrentSettings();
-          const newYaml = generateYaml({
-            title: video.metadata.title,
-            description: video.metadata.description,
-            duration: video.metadata.duration,
-            isLive: video.metadata.isLive,
-            videoUrl: cleanUrl,
-          }, settings);
+          const newYaml = generateYaml(
+            {
+              title: video.metadata.title,
+              description: video.metadata.description,
+              duration: video.metadata.duration,
+              isLive: video.metadata.isLive,
+              videoUrl: cleanUrl,
+            },
+            settings
+          );
           const filename = formatFilename(video.metadata.title, settings.filenameFormat, index);
           return {
             ...video,
@@ -194,7 +232,20 @@ export function ConfigScreen({
       setYamlPreview(newYaml);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [durationMode, customDuration, paddingInterval, scriptOptions, livestreamDuration, customLivestreamDuration, includeTitle, includeDescription, descriptionFormat, settingsMode, perFileSettings, filenameFormat]);
+  }, [
+    durationMode,
+    customDuration,
+    paddingInterval,
+    scriptOptions,
+    livestreamDuration,
+    customLivestreamDuration,
+    includeTitle,
+    includeDescription,
+    descriptionFormat,
+    settingsMode,
+    perFileSettings,
+    filenameFormat,
+  ]);
 
   // Reset duration mode if playlist detected and custom duration is selected
   useEffect(() => {
@@ -366,7 +417,8 @@ export function ConfigScreen({
             filename={`${formatFilename(
               videoTitle || '',
               filenameFormat,
-              (playlistVideos.length > 1 && (filenameFormat === 'sequential-prefix' || filenameFormat === 'sequential-suffix'))
+              playlistVideos.length > 1 &&
+                (filenameFormat === 'sequential-prefix' || filenameFormat === 'sequential-suffix')
                 ? selectedVideoIndex
                 : undefined
             )}.yml`}

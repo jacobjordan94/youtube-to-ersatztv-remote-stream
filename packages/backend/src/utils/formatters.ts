@@ -9,9 +9,7 @@ export function convertIso8601ToDuration(iso8601: string): string {
   const minutes = parseInt(match[2] || '0', 10);
   const seconds = parseInt(match[3] || '0', 10);
 
-  return [hours, minutes, seconds]
-    .map((v) => String(v).padStart(2, '0'))
-    .join(':');
+  return [hours, minutes, seconds].map((v) => String(v).padStart(2, '0')).join(':');
 }
 
 export function padDurationToInterval(duration: string, intervalMinutes: number): string {
@@ -28,7 +26,5 @@ export function padDurationToInterval(duration: string, intervalMinutes: number)
   const paddedHours = Math.floor(paddedMinutes / 60);
   const paddedMins = paddedMinutes % 60;
 
-  return [paddedHours, paddedMins, 0]
-    .map((v) => String(v).padStart(2, '0'))
-    .join(':');
+  return [paddedHours, paddedMins, 0].map((v) => String(v).padStart(2, '0')).join(':');
 }

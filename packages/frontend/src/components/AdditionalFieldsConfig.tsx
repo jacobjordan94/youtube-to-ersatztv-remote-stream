@@ -27,9 +27,7 @@ export function AdditionalFieldsConfig({
 }: AdditionalFieldsConfigProps) {
   return (
     <div>
-      <Label className="text-sm text-white font-medium mb-3 block">
-        Additional Fields
-      </Label>
+      <Label className="text-sm text-white font-medium mb-3 block">Additional Fields</Label>
       <div className="space-y-3">
         <div className="flex items-center space-x-2">
           <Checkbox
@@ -67,7 +65,9 @@ export function AdditionalFieldsConfig({
             </Label>
             <Select
               value={descriptionFormat}
-              onValueChange={(value) => onDescriptionFormatChange(value as typeof descriptionFormat)}
+              onValueChange={(value) =>
+                onDescriptionFormatChange(value as typeof descriptionFormat)
+              }
             >
               <SelectTrigger className="w-full">
                 <SelectValue />
@@ -76,7 +76,9 @@ export function AdditionalFieldsConfig({
                 <SelectItem value="literal">
                   <div className="flex flex-col items-start">
                     <span className="font-medium">Literal (|) - Recommended</span>
-                    <span className="text-xs text-gray-400">Preserves line breaks and formatting</span>
+                    <span className="text-xs text-gray-400">
+                      Preserves line breaks and formatting
+                    </span>
                   </div>
                 </SelectItem>
                 <SelectItem value="folded">
@@ -98,7 +100,6 @@ export function AdditionalFieldsConfig({
             </p>
           </div>
         )}
-
       </div>
     </div>
   );

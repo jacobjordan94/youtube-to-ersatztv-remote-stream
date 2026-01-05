@@ -45,7 +45,7 @@ export function AdditionalConfig({
         />
       </div>
       <div className="flex items-stretch">
-        <Separator orientation='vertical' className='bg-gray-600' />
+        <Separator orientation="vertical" className="bg-gray-600" />
       </div>
       <div className="flex-1">
         <FilenameFormatSelect

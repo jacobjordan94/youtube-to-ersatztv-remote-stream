@@ -22,9 +22,7 @@ export function UrlInput({ url, onUrlChange, disabled }: UrlInputProps) {
         disabled={disabled}
         className="text-base flex-1"
       />
-      <p className="text-sm text-gray-300 mt-2">
-        Enter a YouTube video or playlist URL
-      </p>
+      <p className="text-sm text-gray-300 mt-2">Enter a YouTube video or playlist URL</p>
     </div>
   );
 }

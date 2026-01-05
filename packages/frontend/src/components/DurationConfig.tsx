@@ -70,7 +70,7 @@ export function DurationConfig({
       )}
       {showSeparator && (
         <div className="flex items-stretch">
-          <Separator orientation='vertical' className='bg-gray-600' />
+          <Separator orientation="vertical" className="bg-gray-600" />
         </div>
       )}
       {showVodOptions && (

@@ -1,5 +1,9 @@
 import { describe, it, expect } from 'vitest';
-import { parseYouTubeUrl, validateScriptOptions, sanitizeFilename } from '../../src/utils/validators';
+import {
+  parseYouTubeUrl,
+  validateScriptOptions,
+  sanitizeFilename,
+} from '../../src/utils/validators';
 
 describe('parseYouTubeUrl', () => {
   describe('video URLs', () => {
@@ -31,17 +35,23 @@ describe('parseYouTubeUrl', () => {
 
   describe('playlist URLs', () => {
     it('should parse standard playlist URLs', () => {
-      const result = parseYouTubeUrl('https://youtube.com/playlist?list=PLrAXtmErZgOeiKm4sgNOknGvNjby9efdf');
+      const result = parseYouTubeUrl(
+        'https://youtube.com/playlist?list=PLrAXtmErZgOeiKm4sgNOknGvNjby9efdf'
+      );
       expect(result).toEqual({ type: 'playlist', id: 'PLrAXtmErZgOeiKm4sgNOknGvNjby9efdf' });
     });
 
     it('should parse www.youtube.com playlist URLs', () => {
-      const result = parseYouTubeUrl('https://www.youtube.com/playlist?list=PLrAXtmErZgOeiKm4sgNOknGvNjby9efdf');
+      const result = parseYouTubeUrl(
+        'https://www.youtube.com/playlist?list=PLrAXtmErZgOeiKm4sgNOknGvNjby9efdf'
+      );
       expect(result).toEqual({ type: 'playlist', id: 'PLrAXtmErZgOeiKm4sgNOknGvNjby9efdf' });
     });
 
     it('should parse playlist URLs with additional parameters', () => {
-      const result = parseYouTubeUrl('https://youtube.com/playlist?list=PLrAXtmErZgOeiKm4sgNOknGvNjby9efdf&index=1');
+      const result = parseYouTubeUrl(
+        'https://youtube.com/playlist?list=PLrAXtmErZgOeiKm4sgNOknGvNjby9efdf&index=1'
+      );
       expect(result).toEqual({ type: 'playlist', id: 'PLrAXtmErZgOeiKm4sgNOknGvNjby9efdf' });
     });
   });
@@ -68,12 +78,16 @@ describe('parseYouTubeUrl', () => {
 describe('validateScriptOptions', () => {
   describe('valid options', () => {
     it('should accept valid script with required -o - flag', () => {
-      const result = validateScriptOptions('yt-dlp https://youtube.com/watch?v=dQw4w9WgXcQ --hls-use-mpegts -o -');
+      const result = validateScriptOptions(
+        'yt-dlp https://youtube.com/watch?v=dQw4w9WgXcQ --hls-use-mpegts -o -'
+      );
       expect(result).toEqual({ valid: true });
     });
 
     it('should accept script with multiple valid flags', () => {
-      const result = validateScriptOptions('yt-dlp {VIDEO_URL} --hls-use-mpegts --no-warnings -o -');
+      const result = validateScriptOptions(
+        'yt-dlp {VIDEO_URL} --hls-use-mpegts --no-warnings -o -'
+      );
       expect(result).toEqual({ valid: true });
     });
 

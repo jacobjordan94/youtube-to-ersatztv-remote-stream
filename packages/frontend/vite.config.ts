@@ -34,7 +34,7 @@ export default defineConfig({
             '@radix-ui/react-slot',
           ],
           'syntax-highlighter': ['react-syntax-highlighter'],
-          'jszip': ['jszip'],
+          jszip: ['jszip'],
         },
       },
     },
@@ -51,10 +51,6 @@ export default defineConfig({
 
   // Optimize dependencies
   optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      '@youtube-to-ersatztv/shared',
-    ],
+    include: ['react', 'react-dom', '@youtube-to-ersatztv/shared'],
   },
 });

@@ -38,7 +38,7 @@ export function YamlPreview({
   playlistVideos,
   selectedVideoIndex = 0,
   onVideoChange,
-  visitedFiles
+  visitedFiles,
 }: YamlPreviewProps) {
   const [copied, setCopied] = useState(false);
 
@@ -75,7 +75,10 @@ export function YamlPreview({
                     >
                       <div className="flex items-center gap-2 w-full">
                         {!isVisited && (
-                          <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" title="Unvisited" />
+                          <div
+                            className="w-2 h-2 rounded-full bg-primary flex-shrink-0"
+                            title="Unvisited"
+                          />
                         )}
                         <div className="flex flex-col flex-1 min-w-0">
                           <span className="font-medium truncate">
@@ -120,27 +123,27 @@ export function YamlPreview({
       {/* Editor Content */}
       <div>
         {/* Code Content */}
-          <SyntaxHighlighter
-            language="yaml"
-            style={vscDarkPlus}
-            showLineNumbers={true}
-            wrapLines={true}
-            customStyle={{
-              margin: 0,
-              padding: '1rem 1rem',
-              background: '#1e1e1e',
-              fontSize: '0.875rem',
-              lineHeight: '1.5rem',
-              width: '100%',
-            }}
-            codeTagProps={{
-              style: {
-                fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
-              },
-            }}
-          >
-            {yaml}
-          </SyntaxHighlighter>
+        <SyntaxHighlighter
+          language="yaml"
+          style={vscDarkPlus}
+          showLineNumbers={true}
+          wrapLines={true}
+          customStyle={{
+            margin: 0,
+            padding: '1rem 1rem',
+            background: '#1e1e1e',
+            fontSize: '0.875rem',
+            lineHeight: '1.5rem',
+            width: '100%',
+          }}
+          codeTagProps={{
+            style: {
+              fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace',
+            },
+          }}
+        >
+          {yaml}
+        </SyntaxHighlighter>
       </div>
 
       {/* Footer Info */}

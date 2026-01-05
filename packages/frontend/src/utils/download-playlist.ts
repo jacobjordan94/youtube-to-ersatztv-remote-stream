@@ -36,7 +36,7 @@ export async function downloadAsQueue(videos: PlaylistVideo[]): Promise<void> {
     downloadFile(video.yaml, video.filename);
 
     // Add delay between downloads to avoid browser blocking
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 300));
   }
 }
 

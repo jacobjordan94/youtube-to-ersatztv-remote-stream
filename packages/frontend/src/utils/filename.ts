@@ -39,9 +39,7 @@ export function formatFilename(
 
     case 'kebab':
       // Preserve casing, replace spaces with hyphens
-      formatted = removeInvalidChars(title)
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-'); // Remove consecutive hyphens
+      formatted = removeInvalidChars(title).replace(/\s+/g, '-').replace(/-+/g, '-'); // Remove consecutive hyphens
       break;
 
     case 'snake':

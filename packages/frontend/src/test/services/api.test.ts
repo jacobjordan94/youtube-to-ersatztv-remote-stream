@@ -42,16 +42,13 @@ describe('API Service', () => {
       const result = await convertVideo(mockRequest);
 
       expect(result).toEqual(mockResponse);
-      expect(fetch).toHaveBeenCalledWith(
-        'http://localhost:8787/api/convert',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(mockRequest),
-        }
-      );
+      expect(fetch).toHaveBeenCalledWith('http://localhost:8787/api/convert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(mockRequest),
+      });
     });
 
     it('should handle different duration modes', async () => {
@@ -264,16 +261,13 @@ describe('API Service', () => {
 
       expect(result).toEqual(mockResponse);
       expect(result.videos).toHaveLength(2);
-      expect(fetch).toHaveBeenCalledWith(
-        'http://localhost:8787/api/convert/playlist',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(mockRequest),
-        }
-      );
+      expect(fetch).toHaveBeenCalledWith('http://localhost:8787/api/convert/playlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(mockRequest),
+      });
     });
 
     it('should handle empty playlist response', async () => {

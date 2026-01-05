@@ -82,9 +82,9 @@ export function SettingsModeToggle({
               </label>
             </div>
             <p className="text-xs text-gray-400 mt-2 ml-6">
-              When enabled, current settings will be applied when navigating to a new file.
-              When disabled, each file starts with its original settings.
-              This option becomes disabled after all files have been visited.
+              When enabled, current settings will be applied when navigating to a new file. When
+              disabled, each file starts with its original settings. This option becomes disabled
+              after all files have been visited.
             </p>
           </div>
 
@@ -101,29 +101,17 @@ export function SettingsModeToggle({
               </Button>
             </div>
             <div className="flex-1">
-              <Button
-                onClick={onApplyCurrentToAll}
-                variant="outline"
-                size="sm"
-                className="w-full"
-              >
+              <Button onClick={onApplyCurrentToAll} variant="outline" size="sm" className="w-full">
                 Apply Current Settings to All Files
               </Button>
             </div>
             <div className="flex-1">
-              <Button
-                onClick={onResetAll}
-                variant="outline"
-                size="sm"
-                className="w-full"
-              >
+              <Button onClick={onResetAll} variant="outline" size="sm" className="w-full">
                 Reset All
               </Button>
             </div>
           </div>
-          <p className="text-xs text-gray-400 mt-2">
-            {unvisitedCount} unvisited file(s)
-          </p>
+          <p className="text-xs text-gray-400 mt-2">{unvisitedCount} unvisited file(s)</p>
         </div>
       )}
     </div>

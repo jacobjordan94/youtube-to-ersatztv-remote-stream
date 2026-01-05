@@ -1,8 +1,8 @@
 export type FilenameFormat =
-  | 'original'          // My Video Title.yml
-  | 'compact'           // my-video-title.yml (current default)
-  | 'kebab'             // My-Video-Title.yml
-  | 'snake'             // my_video_title.yml
+  | 'original' // My Video Title.yml
+  | 'compact' // my-video-title.yml (current default)
+  | 'kebab' // My-Video-Title.yml
+  | 'snake' // my_video_title.yml
   | 'sequential-prefix' // 001-my-video-title.yml (playlist only)
   | 'sequential-suffix'; // my-video-title-001.yml (playlist only)
 

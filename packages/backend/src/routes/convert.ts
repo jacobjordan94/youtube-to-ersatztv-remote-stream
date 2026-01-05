@@ -16,39 +16,47 @@ import {
   PlaylistVideo,
 } from '@youtube-to-ersatztv/shared';
 
-const convertSchema = z.object({
-  url: z.string().url(),
-  durationMode: z.enum(['none', 'custom', 'api', 'api-padded']),
-  scriptOptions: z.string().default('--hls-use-mpegts'),
-  customDuration: z
-    .string()
-    .regex(/^([0-9]{2}):([0-5][0-9]):([0-5][0-9])$/, 'Duration must be in HH:MM:SS format (e.g., 01:23:45)')
-    .optional(),
-  paddingInterval: z
-    .number()
-    .int()
-    .refine((val) => [5, 10, 15, 30].includes(val), 'Padding must be 5, 10, 15, or 30 minutes')
-    .optional(),
-}).refine(
-  (data) => {
-    if (data.durationMode === 'custom' && !data.customDuration) {
-      return false;
-    }
-    if (data.durationMode === 'api-padded' && !data.paddingInterval) {
-      return false;
-    }
-    return true;
-  },
-  { message: 'Missing required field for selected duration mode' }
-);
+const convertSchema = z
+  .object({
+    url: z.string().url(),
+    durationMode: z.enum(['none', 'custom', 'api', 'api-padded']),
+    scriptOptions: z.string().default('--hls-use-mpegts'),
+    customDuration: z
+      .string()
+      .regex(
+        /^([0-9]{2}):([0-5][0-9]):([0-5][0-9])$/,
+        'Duration must be in HH:MM:SS format (e.g., 01:23:45)'
+      )
+      .optional(),
+    paddingInterval: z
+      .number()
+      .int()
+      .refine((val) => [5, 10, 15, 30].includes(val), 'Padding must be 5, 10, 15, or 30 minutes')
+      .optional(),
+  })
+  .refine(
+    (data) => {
+      if (data.durationMode === 'custom' && !data.customDuration) {
+        return false;
+      }
+      if (data.durationMode === 'api-padded' && !data.paddingInterval) {
+        return false;
+      }
+      return true;
+    },
+    { message: 'Missing required field for selected duration mode' }
+  );
 
 const convert = new Hono<{ Bindings: Env }>();
 
 // Apply rate limiting: 60 requests per minute per IP
-convert.use('/*', cloudflareRateLimit({
-  windowMs: 60 * 1000, // 1 minute
-  maxRequests: 60,
-}));
+convert.use(
+  '/*',
+  cloudflareRateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    maxRequests: 60,
+  })
+);
 
 convert.post('/', async (c) => {
   try {

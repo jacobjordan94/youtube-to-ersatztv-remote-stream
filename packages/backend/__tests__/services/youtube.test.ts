@@ -77,15 +77,9 @@ describe('YouTube Service', () => {
         videoId: mockVideoId,
       });
 
-      expect(fetch).toHaveBeenCalledWith(
-        expect.stringContaining('videos')
-      );
-      expect(fetch).toHaveBeenCalledWith(
-        expect.stringContaining(`id=${mockVideoId}`)
-      );
-      expect(fetch).toHaveBeenCalledWith(
-        expect.stringContaining('key=test-api-key')
-      );
+      expect(fetch).toHaveBeenCalledWith(expect.stringContaining('videos'));
+      expect(fetch).toHaveBeenCalledWith(expect.stringContaining(`id=${mockVideoId}`));
+      expect(fetch).toHaveBeenCalledWith(expect.stringContaining('key=test-api-key'));
 
       expect(cache.setCachedData).toHaveBeenCalledWith(
         `video:${mockVideoId}`,
@@ -302,12 +296,8 @@ describe('YouTube Service', () => {
 
       expect(result).toEqual(['video1', 'video2', 'video3']);
       expect(fetch).toHaveBeenCalledTimes(1);
-      expect(fetch).toHaveBeenCalledWith(
-        expect.stringContaining('playlistItems')
-      );
-      expect(fetch).toHaveBeenCalledWith(
-        expect.stringContaining(`playlistId=${mockPlaylistId}`)
-      );
+      expect(fetch).toHaveBeenCalledWith(expect.stringContaining('playlistItems'));
+      expect(fetch).toHaveBeenCalledWith(expect.stringContaining(`playlistId=${mockPlaylistId}`));
 
       expect(cache.setCachedData).toHaveBeenCalledWith(
         `playlist:${mockPlaylistId}`,
@@ -340,9 +330,7 @@ describe('YouTube Service', () => {
 
       // Third page without nextPageToken (last page)
       const page3Response: YouTubePlaylistResponse = {
-        items: [
-          { snippet: { resourceId: { videoId: 'video5' } } },
-        ],
+        items: [{ snippet: { resourceId: { videoId: 'video5' } } }],
         // No nextPageToken means last page
       };
 
@@ -376,9 +364,7 @@ describe('YouTube Service', () => {
       vi.mocked(cache.getCachedData).mockResolvedValue(null);
 
       const mockApiResponse: YouTubePlaylistResponse = {
-        items: [
-          { snippet: { resourceId: { videoId: 'video1' } } },
-        ],
+        items: [{ snippet: { resourceId: { videoId: 'video1' } } }],
       };
 
       vi.mocked(fetch).mockResolvedValue({
@@ -388,9 +374,7 @@ describe('YouTube Service', () => {
 
       await getPlaylistVideoIds(mockPlaylistId, mockEnv);
 
-      expect(fetch).toHaveBeenCalledWith(
-        expect.stringContaining('maxResults=50')
-      );
+      expect(fetch).toHaveBeenCalledWith(expect.stringContaining('maxResults=50'));
     });
 
     it('should throw error when API returns non-OK status', async () => {
@@ -442,9 +426,7 @@ describe('YouTube Service', () => {
 
       // First page with data and nextPageToken
       const page1Response: YouTubePlaylistResponse = {
-        items: [
-          { snippet: { resourceId: { videoId: 'video1' } } },
-        ],
+        items: [{ snippet: { resourceId: { videoId: 'video1' } } }],
         nextPageToken: 'token123',
       };
 

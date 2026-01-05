@@ -6,13 +6,10 @@ import {
   YouTubeApiResponse,
   YouTubePlaylistResponse,
   YOUTUBE_API,
-  CACHE_TTL
+  CACHE_TTL,
 } from '@youtube-to-ersatztv/shared';
 
-export async function getVideoMetadata(
-  videoId: string,
-  env: Env
-): Promise<VideoMetadata> {
+export async function getVideoMetadata(videoId: string, env: Env): Promise<VideoMetadata> {
   const cacheKey = `video:${videoId}`;
 
   const cached = await getCachedData<VideoMetadata>(cacheKey, env);
@@ -41,8 +38,7 @@ export async function getVideoMetadata(
   // A video is only considered "live" if it has started but hasn't ended yet
   // If it has actualEndTime, it's a finished livestream (now a VOD)
   const isLive = !!(
-    video.liveStreamingDetails?.actualStartTime &&
-    !video.liveStreamingDetails?.actualEndTime
+    video.liveStreamingDetails?.actualStartTime && !video.liveStreamingDetails?.actualEndTime
   );
 
   const metadata: VideoMetadata = {
@@ -58,10 +54,7 @@ export async function getVideoMetadata(
   return metadata;
 }
 
-export async function getPlaylistVideoIds(
-  playlistId: string,
-  env: Env
-): Promise<string[]> {
+export async function getPlaylistVideoIds(playlistId: string, env: Env): Promise<string[]> {
   const cacheKey = `playlist:${playlistId}`;
 
   const cached = await getCachedData<string[]>(cacheKey, env);
