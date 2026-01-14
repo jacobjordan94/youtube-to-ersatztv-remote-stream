@@ -4,6 +4,7 @@ export interface YamlMetadata {
   duration: string;
   isLive: boolean;
   videoUrl: string;
+  publishedAt?: string;
 }
 
 export interface YamlConfigSettings {
@@ -14,8 +15,11 @@ export interface YamlConfigSettings {
   livestreamDuration: string;
   customLivestreamDuration: string;
   includeTitle: boolean;
-  includeDescription: boolean;
-  descriptionFormat: 'string' | 'folded' | 'literal';
+  includePlot: boolean;
+  plotFormat: 'string' | 'folded' | 'literal';
+  includeYear: boolean;
+  includeContentRating: boolean;
+  contentRating: string;
 }
 
 // Helper function to escape special characters in YAML quoted strings
@@ -28,25 +32,35 @@ export const escapeYamlString = (str: string): string => {
     .replace(/\t/g, '\\t'); // Escape tabs
 };
 
-// Helper function to format description based on selected format
-export const formatDescription = (
+// Helper function to format plot based on selected format
+export const formatPlot = (
   description: string,
   format: 'string' | 'folded' | 'literal'
 ): string => {
   switch (format) {
     case 'string':
-      return `description: "${escapeYamlString(description)}"`;
+      return `plot: "${escapeYamlString(description)}"`;
 
     case 'folded':
       // Folded block scalar - newlines become spaces, blank lines create paragraphs
       const foldedLines = description.split('\n').map((line) => `  ${line}`);
-      return `description: >\n${foldedLines.join('\n')}`;
+      return `plot: >\n${foldedLines.join('\n')}`;
 
     case 'literal':
       // Literal block scalar - preserves exact formatting
       const literalLines = description.split('\n').map((line) => `  ${line}`);
-      return `description: |\n${literalLines.join('\n')}`;
+      return `plot: |\n${literalLines.join('\n')}`;
   }
+};
+
+// Helper function to extract year from ISO 8601 date string
+export const extractYearFromDate = (isoDate?: string): number | undefined => {
+  if (!isoDate) return undefined;
+  // Extract year directly from the string to avoid timezone issues
+  const match = isoDate.match(/^(\d{4})/);
+  if (!match) return undefined;
+  const year = parseInt(match[1], 10);
+  return isNaN(year) ? undefined : year;
 };
 
 // Function to generate YAML locally based on current settings
@@ -97,11 +111,22 @@ export const generateYaml = (metadata: YamlMetadata, settings: YamlConfigSetting
 
   // Add optional fields based on checkboxes
   if (settings.includeTitle) {
-    lines.push(`title: "${metadata.title.replace(/"/g, '\\"')}"`);
+    lines.push(`title: "${escapeYamlString(metadata.title)}"`);
   }
 
-  if (settings.includeDescription) {
-    lines.push(formatDescription(metadata.description, settings.descriptionFormat));
+  if (settings.includePlot && metadata.description) {
+    lines.push(formatPlot(metadata.description, settings.plotFormat));
+  }
+
+  if (settings.includeYear && metadata.publishedAt) {
+    const year = extractYearFromDate(metadata.publishedAt);
+    if (year) {
+      lines.push(`year: ${year}`);
+    }
+  }
+
+  if (settings.includeContentRating && settings.contentRating.trim()) {
+    lines.push(`content_rating: "${escapeYamlString(settings.contentRating)}"`);
   }
 
   return lines.join('\n');

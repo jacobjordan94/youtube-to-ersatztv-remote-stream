@@ -14,8 +14,11 @@ export interface ConfigSettings {
   livestreamDuration: string;
   customLivestreamDuration: string;
   includeTitle: boolean;
-  includeDescription: boolean;
-  descriptionFormat: 'string' | 'folded' | 'literal';
+  includePlot: boolean;
+  plotFormat: 'string' | 'folded' | 'literal';
+  includeYear: boolean;
+  includeContentRating: boolean;
+  contentRating: string;
   filenameFormat: FilenameFormat;
 }
 

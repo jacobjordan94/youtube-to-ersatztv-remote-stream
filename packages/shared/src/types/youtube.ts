@@ -3,6 +3,7 @@ export interface YouTubeVideoDetails {
   snippet: {
     title: string;
     description: string;
+    publishedAt?: string;
   };
   contentDetails: {
     duration: string;

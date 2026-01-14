@@ -52,3 +52,4 @@ wrangler.toml.backup
 .cache/
 .temp/
 .claude/
+CLAUDE.md

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { escapeYamlString, formatDescription, generateYaml } from '../../utils/yaml';
+import { escapeYamlString, formatPlot, generateYaml, extractYearFromDate } from '../../utils/yaml';
 import type { YamlMetadata, YamlConfigSettings } from '../../utils/yaml';
 
 describe('escapeYamlString', () => {
@@ -36,61 +36,83 @@ describe('escapeYamlString', () => {
   });
 });
 
-describe('formatDescription', () => {
+describe('formatPlot', () => {
   describe('string format', () => {
     it('should format as quoted string', () => {
-      const result = formatDescription('Simple description', 'string');
-      expect(result).toBe('description: "Simple description"');
+      const result = formatPlot('Simple description', 'string');
+      expect(result).toBe('plot: "Simple description"');
     });
 
     it('should escape special characters in quoted string', () => {
-      const result = formatDescription('Description with "quotes"', 'string');
-      expect(result).toBe('description: "Description with \\"quotes\\""');
+      const result = formatPlot('Description with "quotes"', 'string');
+      expect(result).toBe('plot: "Description with \\"quotes\\""');
     });
 
     it('should escape newlines in quoted string', () => {
-      const result = formatDescription('Line 1\nLine 2', 'string');
-      expect(result).toBe('description: "Line 1\\nLine 2"');
+      const result = formatPlot('Line 1\nLine 2', 'string');
+      expect(result).toBe('plot: "Line 1\\nLine 2"');
     });
   });
 
   describe('folded format', () => {
     it('should format as folded block scalar', () => {
-      const result = formatDescription('Simple description', 'folded');
-      expect(result).toBe('description: >\n  Simple description');
+      const result = formatPlot('Simple description', 'folded');
+      expect(result).toBe('plot: >\n  Simple description');
     });
 
     it('should preserve line structure with indentation', () => {
-      const result = formatDescription('Line 1\nLine 2\nLine 3', 'folded');
-      expect(result).toBe('description: >\n  Line 1\n  Line 2\n  Line 3');
+      const result = formatPlot('Line 1\nLine 2\nLine 3', 'folded');
+      expect(result).toBe('plot: >\n  Line 1\n  Line 2\n  Line 3');
     });
 
     it('should handle multi-paragraph text', () => {
-      const result = formatDescription('Paragraph 1\n\nParagraph 2', 'folded');
-      expect(result).toBe('description: >\n  Paragraph 1\n  \n  Paragraph 2');
+      const result = formatPlot('Paragraph 1\n\nParagraph 2', 'folded');
+      expect(result).toBe('plot: >\n  Paragraph 1\n  \n  Paragraph 2');
     });
   });
 
   describe('literal format', () => {
     it('should format as literal block scalar', () => {
-      const result = formatDescription('Simple description', 'literal');
-      expect(result).toBe('description: |\n  Simple description');
+      const result = formatPlot('Simple description', 'literal');
+      expect(result).toBe('plot: |\n  Simple description');
     });
 
     it('should preserve exact formatting', () => {
-      const result = formatDescription('Line 1\nLine 2\nLine 3', 'literal');
-      expect(result).toBe('description: |\n  Line 1\n  Line 2\n  Line 3');
+      const result = formatPlot('Line 1\nLine 2\nLine 3', 'literal');
+      expect(result).toBe('plot: |\n  Line 1\n  Line 2\n  Line 3');
     });
 
     it('should preserve blank lines', () => {
-      const result = formatDescription('Paragraph 1\n\nParagraph 2', 'literal');
-      expect(result).toBe('description: |\n  Paragraph 1\n  \n  Paragraph 2');
+      const result = formatPlot('Paragraph 1\n\nParagraph 2', 'literal');
+      expect(result).toBe('plot: |\n  Paragraph 1\n  \n  Paragraph 2');
     });
 
     it('should preserve trailing whitespace structure', () => {
-      const result = formatDescription('Text with\n  indentation', 'literal');
-      expect(result).toBe('description: |\n  Text with\n    indentation');
+      const result = formatPlot('Text with\n  indentation', 'literal');
+      expect(result).toBe('plot: |\n  Text with\n    indentation');
     });
+  });
+});
+
+describe('extractYearFromDate', () => {
+  it('should extract year from ISO date string', () => {
+    expect(extractYearFromDate('2024-03-15T10:30:00Z')).toBe(2024);
+  });
+
+  it('should extract year from date-only string', () => {
+    expect(extractYearFromDate('2023-01-01')).toBe(2023);
+  });
+
+  it('should return undefined for undefined input', () => {
+    expect(extractYearFromDate(undefined)).toBeUndefined();
+  });
+
+  it('should return undefined for invalid date', () => {
+    expect(extractYearFromDate('not-a-date')).toBeUndefined();
+  });
+
+  it('should return undefined for empty string', () => {
+    expect(extractYearFromDate('')).toBeUndefined();
   });
 });
 
@@ -101,6 +123,7 @@ describe('generateYaml', () => {
     duration: '00:03:33',
     isLive: false,
     videoUrl: 'https://youtube.com/watch?v=dQw4w9WgXcQ',
+    publishedAt: '2024-03-15T10:30:00Z',
   };
 
   const mockLiveMetadata: YamlMetadata = {
@@ -109,6 +132,7 @@ describe('generateYaml', () => {
     duration: '02:00:00',
     isLive: true,
     videoUrl: 'https://youtube.com/watch?v=liveStream123',
+    publishedAt: '2024-06-01T12:00:00Z',
   };
 
   const baseSettings: YamlConfigSettings = {
@@ -119,8 +143,11 @@ describe('generateYaml', () => {
     livestreamDuration: '02:00:00',
     customLivestreamDuration: '03:00:00',
     includeTitle: false,
-    includeDescription: false,
-    descriptionFormat: 'string',
+    includePlot: false,
+    plotFormat: 'string',
+    includeYear: false,
+    includeContentRating: false,
+    contentRating: '',
   };
 
   describe('basic VOD generation', () => {
@@ -250,45 +277,113 @@ describe('generateYaml', () => {
       expect(yaml).toContain('title: "Video with \\"quotes\\""');
     });
 
-    it('should include description as string when enabled', () => {
+    it('should include plot as string when enabled', () => {
       const yaml = generateYaml(mockVodMetadata, {
         ...baseSettings,
-        includeDescription: true,
-        descriptionFormat: 'string',
+        includePlot: true,
+        plotFormat: 'string',
       });
 
-      expect(yaml).toContain('description: "Test description"');
+      expect(yaml).toContain('plot: "Test description"');
     });
 
-    it('should include description as folded when enabled', () => {
+    it('should include plot as folded when enabled', () => {
       const yaml = generateYaml(mockVodMetadata, {
         ...baseSettings,
-        includeDescription: true,
-        descriptionFormat: 'folded',
+        includePlot: true,
+        plotFormat: 'folded',
       });
 
-      expect(yaml).toContain('description: >');
+      expect(yaml).toContain('plot: >');
       expect(yaml).toContain('  Test description');
     });
 
-    it('should include description as literal when enabled', () => {
+    it('should include plot as literal when enabled', () => {
       const yaml = generateYaml(mockVodMetadata, {
         ...baseSettings,
-        includeDescription: true,
-        descriptionFormat: 'literal',
+        includePlot: true,
+        plotFormat: 'literal',
       });
 
-      expect(yaml).toContain('description: |');
+      expect(yaml).toContain('plot: |');
       expect(yaml).toContain('  Test description');
     });
 
-    it('should exclude description when disabled', () => {
+    it('should exclude plot when disabled', () => {
       const yaml = generateYaml(mockVodMetadata, {
         ...baseSettings,
-        includeDescription: false,
+        includePlot: false,
       });
 
-      expect(yaml).not.toContain('description:');
+      expect(yaml).not.toContain('plot:');
+    });
+
+    it('should include year when enabled', () => {
+      const yaml = generateYaml(mockVodMetadata, {
+        ...baseSettings,
+        includeYear: true,
+      });
+
+      expect(yaml).toContain('year: 2024');
+    });
+
+    it('should exclude year when disabled', () => {
+      const yaml = generateYaml(mockVodMetadata, {
+        ...baseSettings,
+        includeYear: false,
+      });
+
+      expect(yaml).not.toContain('year:');
+    });
+
+    it('should not include year when publishedAt is missing', () => {
+      const metadataWithoutDate = { ...mockVodMetadata, publishedAt: undefined };
+      const yaml = generateYaml(metadataWithoutDate, {
+        ...baseSettings,
+        includeYear: true,
+      });
+
+      expect(yaml).not.toContain('year:');
+    });
+
+    it('should include content_rating when enabled with value', () => {
+      const yaml = generateYaml(mockVodMetadata, {
+        ...baseSettings,
+        includeContentRating: true,
+        contentRating: 'TV-G',
+      });
+
+      expect(yaml).toContain('content_rating: "TV-G"');
+    });
+
+    it('should exclude content_rating when disabled', () => {
+      const yaml = generateYaml(mockVodMetadata, {
+        ...baseSettings,
+        includeContentRating: false,
+        contentRating: 'TV-G',
+      });
+
+      expect(yaml).not.toContain('content_rating:');
+    });
+
+    it('should not include content_rating when enabled but empty', () => {
+      const yaml = generateYaml(mockVodMetadata, {
+        ...baseSettings,
+        includeContentRating: true,
+        contentRating: '',
+      });
+
+      expect(yaml).not.toContain('content_rating:');
+    });
+
+    it('should not include content_rating when enabled but whitespace only', () => {
+      const yaml = generateYaml(mockVodMetadata, {
+        ...baseSettings,
+        includeContentRating: true,
+        contentRating: '   ',
+      });
+
+      expect(yaml).not.toContain('content_rating:');
     });
   });
 
@@ -317,15 +412,20 @@ describe('generateYaml', () => {
         ...baseSettings,
         durationMode: 'api',
         includeTitle: true,
-        includeDescription: true,
-        descriptionFormat: 'literal',
+        includePlot: true,
+        plotFormat: 'literal',
+        includeYear: true,
+        includeContentRating: true,
+        contentRating: 'PG-13',
       });
 
       expect(yaml).toContain('script:');
       expect(yaml).toContain('is_live: false');
       expect(yaml).toContain('duration: 00:03:33');
       expect(yaml).toContain('title: "Test Video"');
-      expect(yaml).toContain('description: |');
+      expect(yaml).toContain('plot: |');
+      expect(yaml).toContain('year: 2024');
+      expect(yaml).toContain('content_rating: "PG-13"');
     });
 
     it('should generate minimal YAML for VOD', () => {
@@ -333,7 +433,9 @@ describe('generateYaml', () => {
         ...baseSettings,
         durationMode: 'none',
         includeTitle: false,
-        includeDescription: false,
+        includePlot: false,
+        includeYear: false,
+        includeContentRating: false,
       });
 
       const lines = yaml.split('\n');
@@ -356,14 +458,15 @@ describe('generateYaml', () => {
   });
 
   describe('edge cases', () => {
-    it('should handle empty description', () => {
+    it('should skip plot when description is empty', () => {
       const metadata = { ...mockVodMetadata, description: '' };
       const yaml = generateYaml(metadata, {
         ...baseSettings,
-        includeDescription: true,
+        includePlot: true,
       });
 
-      expect(yaml).toContain('description: ""');
+      // Empty descriptions are skipped, not output as empty string
+      expect(yaml).not.toContain('plot:');
     });
 
     it('should handle very long title', () => {

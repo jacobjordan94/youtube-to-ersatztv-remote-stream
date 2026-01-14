@@ -41,11 +41,16 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
   );
   const [livestreamDurationError, setLivestreamDurationError] = useState<string | null>(null);
   const [includeTitle, setIncludeTitle] = useState(conversionResult.initialSettings.includeTitle);
-  const [includeDescription, setIncludeDescription] = useState(
-    conversionResult.initialSettings.includeDescription
+  const [includePlot, setIncludePlot] = useState(conversionResult.initialSettings.includePlot);
+  const [plotFormat, setPlotFormat] = useState<'string' | 'folded' | 'literal'>(
+    conversionResult.initialSettings.plotFormat
   );
-  const [descriptionFormat, setDescriptionFormat] = useState<'string' | 'folded' | 'literal'>(
-    conversionResult.initialSettings.descriptionFormat
+  const [includeYear, setIncludeYear] = useState(conversionResult.initialSettings.includeYear);
+  const [includeContentRating, setIncludeContentRating] = useState(
+    conversionResult.initialSettings.includeContentRating
+  );
+  const [contentRating, setContentRating] = useState(
+    conversionResult.initialSettings.contentRating
   );
   const [scriptOptions, setScriptOptions] = useState(
     conversionResult.initialSettings.scriptOptions
@@ -89,8 +94,11 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
     livestreamDuration,
     customLivestreamDuration,
     includeTitle,
-    includeDescription,
-    descriptionFormat,
+    includePlot,
+    plotFormat,
+    includeYear,
+    includeContentRating,
+    contentRating,
     filenameFormat,
   });
 
@@ -103,8 +111,11 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
     setLivestreamDuration(settings.livestreamDuration);
     setCustomLivestreamDuration(settings.customLivestreamDuration);
     setIncludeTitle(settings.includeTitle);
-    setIncludeDescription(settings.includeDescription);
-    setDescriptionFormat(settings.descriptionFormat);
+    setIncludePlot(settings.includePlot);
+    setPlotFormat(settings.plotFormat);
+    setIncludeYear(settings.includeYear);
+    setIncludeContentRating(settings.includeContentRating);
+    setContentRating(settings.contentRating);
     setFilenameFormat(settings.filenameFormat);
   };
 
@@ -162,8 +173,11 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
     livestreamDuration,
     customLivestreamDuration,
     includeTitle,
-    includeDescription,
-    descriptionFormat,
+    includePlot,
+    plotFormat,
+    includeYear,
+    includeContentRating,
+    contentRating,
     settingsMode,
     filenameFormat,
   ]);
@@ -185,6 +199,7 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
               duration: video.metadata.duration,
               isLive: video.metadata.isLive,
               videoUrl: cleanUrl,
+              publishedAt: video.metadata.publishedAt,
             },
             currentSettings
           );
@@ -211,6 +226,7 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
               duration: video.metadata.duration,
               isLive: video.metadata.isLive,
               videoUrl: cleanUrl,
+              publishedAt: video.metadata.publishedAt,
             },
             settings
           );
@@ -240,8 +256,11 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
     livestreamDuration,
     customLivestreamDuration,
     includeTitle,
-    includeDescription,
-    descriptionFormat,
+    includePlot,
+    plotFormat,
+    includeYear,
+    includeContentRating,
+    contentRating,
     settingsMode,
     perFileSettings,
     filenameFormat,
@@ -352,6 +371,7 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
       duration: selectedVideo.metadata.duration,
       isLive: selectedVideo.metadata.isLive,
       videoUrl: cleanUrl,
+      publishedAt: selectedVideo.metadata.publishedAt,
     });
 
     // Load settings for new video
@@ -451,11 +471,17 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
         scriptOptions={scriptOptions}
         onScriptOptionsChange={setScriptOptions}
         includeTitle={includeTitle}
-        includeDescription={includeDescription}
-        descriptionFormat={descriptionFormat}
+        includePlot={includePlot}
+        plotFormat={plotFormat}
+        includeYear={includeYear}
+        includeContentRating={includeContentRating}
+        contentRating={contentRating}
         onIncludeTitleChange={setIncludeTitle}
-        onIncludeDescriptionChange={setIncludeDescription}
-        onDescriptionFormatChange={setDescriptionFormat}
+        onIncludePlotChange={setIncludePlot}
+        onPlotFormatChange={setPlotFormat}
+        onIncludeYearChange={setIncludeYear}
+        onIncludeContentRatingChange={setIncludeContentRating}
+        onContentRatingChange={setContentRating}
         filenameFormat={filenameFormat}
         onFilenameFormatChange={setFilenameFormat}
         onVideoChange={handlePlaylistVideoChange}

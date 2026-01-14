@@ -14,6 +14,7 @@ export interface VideoMetadata {
   duration: string;
   isLive: boolean;
   videoId: string;
+  publishedAt?: string;
 }
 
 export interface ConvertVideoResponse {

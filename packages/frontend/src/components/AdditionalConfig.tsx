@@ -6,11 +6,17 @@ import type { FilenameFormat } from '@/types/config';
 interface AdditionalConfigProps {
   // Additional fields props
   includeTitle: boolean;
-  includeDescription: boolean;
-  descriptionFormat: 'string' | 'folded' | 'literal';
+  includePlot: boolean;
+  plotFormat: 'string' | 'folded' | 'literal';
+  includeYear: boolean;
+  includeContentRating: boolean;
+  contentRating: string;
   onIncludeTitleChange: (checked: boolean) => void;
-  onIncludeDescriptionChange: (checked: boolean) => void;
-  onDescriptionFormatChange: (format: 'string' | 'folded' | 'literal') => void;
+  onIncludePlotChange: (checked: boolean) => void;
+  onPlotFormatChange: (format: 'string' | 'folded' | 'literal') => void;
+  onIncludeYearChange: (checked: boolean) => void;
+  onIncludeContentRatingChange: (checked: boolean) => void;
+  onContentRatingChange: (value: string) => void;
 
   // Filename format props
   filenameFormat: FilenameFormat;
@@ -22,11 +28,17 @@ interface AdditionalConfigProps {
 
 export function AdditionalConfig({
   includeTitle,
-  includeDescription,
-  descriptionFormat,
+  includePlot,
+  plotFormat,
+  includeYear,
+  includeContentRating,
+  contentRating,
   onIncludeTitleChange,
-  onIncludeDescriptionChange,
-  onDescriptionFormatChange,
+  onIncludePlotChange,
+  onPlotFormatChange,
+  onIncludeYearChange,
+  onIncludeContentRatingChange,
+  onContentRatingChange,
   filenameFormat,
   onFilenameFormatChange,
   isPlaylist,
@@ -37,11 +49,17 @@ export function AdditionalConfig({
       <div className="flex-1">
         <AdditionalFieldsConfig
           includeTitle={includeTitle}
-          includeDescription={includeDescription}
-          descriptionFormat={descriptionFormat}
+          includePlot={includePlot}
+          plotFormat={plotFormat}
+          includeYear={includeYear}
+          includeContentRating={includeContentRating}
+          contentRating={contentRating}
           onIncludeTitleChange={onIncludeTitleChange}
-          onIncludeDescriptionChange={onIncludeDescriptionChange}
-          onDescriptionFormatChange={onDescriptionFormatChange}
+          onIncludePlotChange={onIncludePlotChange}
+          onPlotFormatChange={onPlotFormatChange}
+          onIncludeYearChange={onIncludeYearChange}
+          onIncludeContentRatingChange={onIncludeContentRatingChange}
+          onContentRatingChange={onContentRatingChange}
         />
       </div>
       <div className="flex items-stretch">

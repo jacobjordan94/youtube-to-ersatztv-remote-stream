@@ -33,8 +33,11 @@ function App() {
     livestreamDuration: '00:00:00',
     customLivestreamDuration: '00:00:00',
     includeTitle: false,
-    includeDescription: false,
-    descriptionFormat: 'literal',
+    includePlot: false,
+    plotFormat: 'literal',
+    includeYear: false,
+    includeContentRating: false,
+    contentRating: '',
     filenameFormat: 'compact',
   });
 
@@ -92,6 +95,7 @@ function App() {
           duration: firstVideo.metadata.duration,
           isLive: firstVideo.metadata.isLive,
           videoUrl: cleanUrl,
+          publishedAt: firstVideo.metadata.publishedAt,
         };
 
         // Generate initial YAML for first video
@@ -131,6 +135,7 @@ function App() {
           duration: response.metadata.duration,
           isLive: response.metadata.isLive,
           videoUrl: cleanUrl,
+          publishedAt: response.metadata.publishedAt,
         };
 
         // Generate initial YAML

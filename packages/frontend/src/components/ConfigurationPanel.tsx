@@ -42,11 +42,17 @@ interface ConfigurationPanelProps {
 
   // Additional fields
   includeTitle: boolean;
-  includeDescription: boolean;
-  descriptionFormat: 'string' | 'folded' | 'literal';
+  includePlot: boolean;
+  plotFormat: 'string' | 'folded' | 'literal';
+  includeYear: boolean;
+  includeContentRating: boolean;
+  contentRating: string;
   onIncludeTitleChange: (checked: boolean) => void;
-  onIncludeDescriptionChange: (checked: boolean) => void;
-  onDescriptionFormatChange: (format: 'string' | 'folded' | 'literal') => void;
+  onIncludePlotChange: (checked: boolean) => void;
+  onPlotFormatChange: (format: 'string' | 'folded' | 'literal') => void;
+  onIncludeYearChange: (checked: boolean) => void;
+  onIncludeContentRatingChange: (checked: boolean) => void;
+  onContentRatingChange: (value: string) => void;
 
   // Filename format
   filenameFormat: FilenameFormat;
@@ -86,11 +92,17 @@ export function ConfigurationPanel({
   scriptOptions,
   onScriptOptionsChange,
   includeTitle,
-  includeDescription,
-  descriptionFormat,
+  includePlot,
+  plotFormat,
+  includeYear,
+  includeContentRating,
+  contentRating,
   onIncludeTitleChange,
-  onIncludeDescriptionChange,
-  onDescriptionFormatChange,
+  onIncludePlotChange,
+  onPlotFormatChange,
+  onIncludeYearChange,
+  onIncludeContentRatingChange,
+  onContentRatingChange,
   filenameFormat,
   onFilenameFormatChange,
   onVideoChange,
@@ -182,11 +194,17 @@ export function ConfigurationPanel({
 
             <AdditionalConfig
               includeTitle={includeTitle}
-              includeDescription={includeDescription}
-              descriptionFormat={descriptionFormat}
+              includePlot={includePlot}
+              plotFormat={plotFormat}
+              includeYear={includeYear}
+              includeContentRating={includeContentRating}
+              contentRating={contentRating}
               onIncludeTitleChange={onIncludeTitleChange}
-              onIncludeDescriptionChange={onIncludeDescriptionChange}
-              onDescriptionFormatChange={onDescriptionFormatChange}
+              onIncludePlotChange={onIncludePlotChange}
+              onPlotFormatChange={onPlotFormatChange}
+              onIncludeYearChange={onIncludeYearChange}
+              onIncludeContentRatingChange={onIncludeContentRatingChange}
+              onContentRatingChange={onContentRatingChange}
               filenameFormat={filenameFormat}
               onFilenameFormatChange={onFilenameFormatChange}
               isPlaylist={isPlaylist}

@@ -4,4 +4,5 @@ export interface VideoMetadata {
   duration: string;
   isLive: boolean;
   videoUrl: string;
+  publishedAt?: string;
 }

@@ -1,5 +1,6 @@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -10,20 +11,32 @@ import {
 
 interface AdditionalFieldsConfigProps {
   includeTitle: boolean;
-  includeDescription: boolean;
-  descriptionFormat: 'string' | 'folded' | 'literal';
+  includePlot: boolean;
+  plotFormat: 'string' | 'folded' | 'literal';
+  includeYear: boolean;
+  includeContentRating: boolean;
+  contentRating: string;
   onIncludeTitleChange: (checked: boolean) => void;
-  onIncludeDescriptionChange: (checked: boolean) => void;
-  onDescriptionFormatChange: (format: 'string' | 'folded' | 'literal') => void;
+  onIncludePlotChange: (checked: boolean) => void;
+  onPlotFormatChange: (format: 'string' | 'folded' | 'literal') => void;
+  onIncludeYearChange: (checked: boolean) => void;
+  onIncludeContentRatingChange: (checked: boolean) => void;
+  onContentRatingChange: (value: string) => void;
 }
 
 export function AdditionalFieldsConfig({
   includeTitle,
-  includeDescription,
-  descriptionFormat,
+  includePlot,
+  plotFormat,
+  includeYear,
+  includeContentRating,
+  contentRating,
   onIncludeTitleChange,
-  onIncludeDescriptionChange,
-  onDescriptionFormatChange,
+  onIncludePlotChange,
+  onPlotFormatChange,
+  onIncludeYearChange,
+  onIncludeContentRatingChange,
+  onContentRatingChange,
 }: AdditionalFieldsConfigProps) {
   return (
     <div>
@@ -45,29 +58,28 @@ export function AdditionalFieldsConfig({
 
         <div className="flex items-center space-x-2">
           <Checkbox
-            id="includeDescription"
-            checked={includeDescription}
-            onCheckedChange={(checked) => onIncludeDescriptionChange(checked === true)}
+            id="includePlot"
+            checked={includePlot}
+            onCheckedChange={(checked) => onIncludePlotChange(checked === true)}
           />
           <label
-            htmlFor="includeDescription"
+            htmlFor="includePlot"
             className="text-sm text-white font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
-            Add description
+            Add plot
+            <span className="text-xs text-gray-400 ml-1">(from video description)</span>
           </label>
         </div>
 
-        {/* Description Format Selector - shown when includeDescription is true */}
-        {includeDescription && (
+        {/* Plot Format Selector - shown when includePlot is true */}
+        {includePlot && (
           <div className="ml-6 space-y-2">
-            <Label htmlFor="descriptionFormat" className="text-xs text-gray-300">
-              Description Format
+            <Label htmlFor="plotFormat" className="text-xs text-gray-300">
+              Plot Format
             </Label>
             <Select
-              value={descriptionFormat}
-              onValueChange={(value) =>
-                onDescriptionFormatChange(value as typeof descriptionFormat)
-              }
+              value={plotFormat}
+              onValueChange={(value) => onPlotFormatChange(value as typeof plotFormat)}
             >
               <SelectTrigger className="w-full">
                 <SelectValue />
@@ -96,8 +108,54 @@ export function AdditionalFieldsConfig({
               </SelectContent>
             </Select>
             <p className="text-xs text-gray-300">
-              Choose how multi-line descriptions are formatted in YAML
+              Choose how multi-line plots are formatted in YAML
             </p>
+          </div>
+        )}
+
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="includeYear"
+            checked={includeYear}
+            onCheckedChange={(checked) => onIncludeYearChange(checked === true)}
+          />
+          <label
+            htmlFor="includeYear"
+            className="text-sm text-white font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Add year
+            <span className="text-xs text-gray-400 ml-1">(from publish date)</span>
+          </label>
+        </div>
+
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="includeContentRating"
+            checked={includeContentRating}
+            onCheckedChange={(checked) => onIncludeContentRatingChange(checked === true)}
+          />
+          <label
+            htmlFor="includeContentRating"
+            className="text-sm text-white font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            Add content rating
+          </label>
+        </div>
+
+        {/* Content Rating Input - shown when includeContentRating is true */}
+        {includeContentRating && (
+          <div className="ml-6 space-y-2">
+            <Label htmlFor="contentRating" className="text-xs text-gray-300">
+              Content Rating
+            </Label>
+            <Input
+              id="contentRating"
+              value={contentRating}
+              onChange={(e) => onContentRatingChange(e.target.value)}
+              placeholder="e.g., TV-G, PG-13, TV-MA"
+              className="w-full"
+            />
+            <p className="text-xs text-gray-300">Enter the content rating for this video</p>
           </div>
         )}
       </div>

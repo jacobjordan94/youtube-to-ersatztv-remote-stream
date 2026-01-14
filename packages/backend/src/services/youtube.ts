@@ -47,6 +47,7 @@ export async function getVideoMetadata(videoId: string, env: Env): Promise<Video
     duration: convertIso8601ToDuration(video.contentDetails.duration),
     isLive,
     videoId,
+    publishedAt: video.snippet.publishedAt,
   };
 
   await setCachedData(cacheKey, metadata, env, CACHE_TTL.VIDEO_METADATA);
