@@ -6,9 +6,9 @@
   <rect x="11" y="15" width="42" height="26" rx="2" fill="#008080"/>
 
   <!-- Play button -->
-  <path d="M 28 24 L 28 38 L 40 31 Z" fill="#01a0a0"/>
+  <path d="M 27 21 L 27 35 L 39 28 Z" fill="#01a0a0"/>
 
   <!-- TV stand base -->
-  <rect x="28" y="44" width="8" height="4" rx="2" fill="#01a0a0"/>
+  <rect x="28" y="43" width="8" height="6" rx="0" fill="#01a0a0"/>
   <rect x="20" y="48" width="24" height="3" rx="1.5" fill="#01a0a0"/>
 </svg>
