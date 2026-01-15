@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'react';
 import type { PlaylistVideo } from '@youtube-to-ersatztv/shared';
 import type { ConversionResult } from '@/types/conversion';
-import type { ConfigSettings, SettingsMode, FilenameFormat } from '@/types/config';
+import type { ConfigSettings, SettingsMode, FilenameFormat, ThumbnailResolution } from '@/types/config';
 import type { VideoMetadata } from '@/types/metadata';
 import type { DownloadMethod } from '@/components/YamlPreview';
 import { generateYaml } from '@/utils/yaml';
 import { downloadFile } from '@/utils/download';
-import { downloadAsZip, downloadAsQueue, downloadCurrent } from '@/utils/download-playlist';
+import {
+  downloadAsZip,
+  downloadAsQueue,
+  downloadCurrent,
+  downloadCurrentWithThumbnail,
+  downloadCurrentAsZip,
+} from '@/utils/download-playlist';
 import { formatFilename } from '@/utils/filename';
 import { BackButton } from './BackButton';
 import { SettingsModeToggle } from './SettingsModeToggle';
@@ -58,6 +64,12 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
   const [filenameFormat, setFilenameFormat] = useState<FilenameFormat>(
     conversionResult.initialSettings.filenameFormat
   );
+  const [includeThumbnail, setIncludeThumbnail] = useState(
+    conversionResult.initialSettings.includeThumbnail
+  );
+  const [thumbnailResolution, setThumbnailResolution] = useState<ThumbnailResolution>(
+    conversionResult.initialSettings.thumbnailResolution
+  );
 
   // Video/playlist display state
   const [yamlPreview, setYamlPreview] = useState<string | null>(conversionResult.firstVideo.yaml);
@@ -100,6 +112,8 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
     includeContentRating,
     contentRating,
     filenameFormat,
+    includeThumbnail,
+    thumbnailResolution,
   });
 
   // Apply configuration settings
@@ -117,6 +131,8 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
     setIncludeContentRating(settings.includeContentRating);
     setContentRating(settings.contentRating);
     setFilenameFormat(settings.filenameFormat);
+    setIncludeThumbnail(settings.includeThumbnail);
+    setThumbnailResolution(settings.thumbnailResolution);
   };
 
   // Save current settings for current video (per-file mode only)
@@ -180,6 +196,8 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
     contentRating,
     settingsMode,
     filenameFormat,
+    includeThumbnail,
+    thumbnailResolution,
   ]);
 
   // Regenerate YAML when duration or script settings change
@@ -284,12 +302,21 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
   const handlePlaylistDownload = async (method: DownloadMethod) => {
     if (playlistVideos.length === 0) return;
 
+    const thumbnailOptions = {
+      includeThumbnail,
+      thumbnailResolution,
+    };
+
     if (method === 'current') {
       downloadCurrent(playlistVideos[selectedVideoIndex]);
+    } else if (method === 'current-queue') {
+      await downloadCurrentWithThumbnail(playlistVideos[selectedVideoIndex], thumbnailOptions);
+    } else if (method === 'current-zip') {
+      await downloadCurrentAsZip(playlistVideos[selectedVideoIndex], thumbnailOptions);
     } else if (method === 'zip') {
-      await downloadAsZip(playlistVideos);
+      await downloadAsZip(playlistVideos, thumbnailOptions);
     } else if (method === 'queue') {
-      await downloadAsQueue(playlistVideos);
+      await downloadAsQueue(playlistVideos, thumbnailOptions);
     }
   };
 
@@ -372,6 +399,7 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
       isLive: selectedVideo.metadata.isLive,
       videoUrl: cleanUrl,
       publishedAt: selectedVideo.metadata.publishedAt,
+      thumbnails: selectedVideo.metadata.thumbnails,
     });
 
     // Load settings for new video
@@ -476,12 +504,16 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
         includeYear={includeYear}
         includeContentRating={includeContentRating}
         contentRating={contentRating}
+        includeThumbnail={includeThumbnail}
+        thumbnailResolution={thumbnailResolution}
         onIncludeTitleChange={setIncludeTitle}
         onIncludePlotChange={setIncludePlot}
         onPlotFormatChange={setPlotFormat}
         onIncludeYearChange={setIncludeYear}
         onIncludeContentRatingChange={setIncludeContentRating}
         onContentRatingChange={setContentRating}
+        onIncludeThumbnailChange={setIncludeThumbnail}
+        onThumbnailResolutionChange={setThumbnailResolution}
         filenameFormat={filenameFormat}
         onFilenameFormatChange={setFilenameFormat}
         onVideoChange={handlePlaylistVideoChange}

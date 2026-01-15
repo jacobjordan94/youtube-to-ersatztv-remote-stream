@@ -1,5 +1,11 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { downloadAsZip, downloadAsQueue, downloadCurrent } from '../../utils/download-playlist';
+import {
+  downloadAsZip,
+  downloadAsQueue,
+  downloadCurrent,
+  downloadCurrentWithThumbnail,
+  downloadCurrentAsZip,
+} from '../../utils/download-playlist';
 import * as downloadModule from '../../utils/download';
 import JSZip from 'jszip';
 import type { PlaylistVideo } from '@youtube-to-ersatztv/shared';
@@ -10,6 +16,10 @@ vi.mock('jszip');
 // Mock download module
 vi.mock('../../utils/download', () => ({
   downloadFile: vi.fn(),
+  downloadBlob: vi.fn(),
+  fetchThumbnail: vi.fn(),
+  getThumbnailExtension: vi.fn().mockReturnValue('jpg'),
+  getThumbnailUrl: vi.fn(),
 }));
 
 describe('Download Playlist Utilities', () => {
@@ -449,6 +459,243 @@ describe('Download Playlist Utilities', () => {
       downloadCurrent(mockVideo);
 
       expect(downloadModule.downloadFile).toHaveBeenCalledWith(mockVideo.yaml, 'special.yaml');
+    });
+  });
+
+  describe('downloadAsZip with thumbnails', () => {
+    it('should include thumbnails when enabled', async () => {
+      const mockVideos: PlaylistVideo[] = [
+        {
+          filename: 'video.yml',
+          yaml: 'content: test',
+          metadata: {
+            title: 'Test Video',
+            description: '',
+            duration: '00:05:00',
+            isLive: false,
+            videoId: 'test123',
+            thumbnails: {
+              standard: { url: 'https://example.com/thumb.jpg', width: 640, height: 480 },
+            },
+          },
+        },
+      ];
+
+      const mockBlob = new Blob(['thumbnail-data']);
+      vi.mocked(downloadModule.getThumbnailUrl).mockReturnValue('https://example.com/thumb.jpg');
+      vi.mocked(downloadModule.fetchThumbnail).mockResolvedValue(mockBlob);
+      vi.mocked(downloadModule.getThumbnailExtension).mockReturnValue('jpg');
+
+      const mockZipInstance = {
+        file: vi.fn(),
+        generateAsync: vi.fn().mockResolvedValue(new Blob([])),
+      };
+      vi.mocked(JSZip).mockImplementation(() => mockZipInstance as any);
+
+      await downloadAsZip(mockVideos, { includeThumbnail: true, thumbnailResolution: 'highest' });
+
+      // Verify both YAML and thumbnail were added
+      expect(mockZipInstance.file).toHaveBeenCalledTimes(2);
+      expect(mockZipInstance.file).toHaveBeenCalledWith('video.yml', 'content: test');
+      expect(mockZipInstance.file).toHaveBeenCalledWith('video.jpg', mockBlob);
+    });
+
+    it('should skip thumbnail when fetch fails', async () => {
+      const mockVideos: PlaylistVideo[] = [
+        {
+          filename: 'video.yml',
+          yaml: 'content: test',
+          metadata: {
+            title: 'Test Video',
+            description: '',
+            duration: '00:05:00',
+            isLive: false,
+            videoId: 'test123',
+            thumbnails: {
+              standard: { url: 'https://example.com/thumb.jpg', width: 640, height: 480 },
+            },
+          },
+        },
+      ];
+
+      vi.mocked(downloadModule.getThumbnailUrl).mockReturnValue('https://example.com/thumb.jpg');
+      vi.mocked(downloadModule.fetchThumbnail).mockRejectedValue(new Error('Network error'));
+
+      const mockZipInstance = {
+        file: vi.fn(),
+        generateAsync: vi.fn().mockResolvedValue(new Blob([])),
+      };
+      vi.mocked(JSZip).mockImplementation(() => mockZipInstance as any);
+
+      // Should not throw
+      await downloadAsZip(mockVideos, { includeThumbnail: true, thumbnailResolution: 'highest' });
+
+      // Only YAML should be added
+      expect(mockZipInstance.file).toHaveBeenCalledTimes(1);
+      expect(mockZipInstance.file).toHaveBeenCalledWith('video.yml', 'content: test');
+    });
+
+    it('should not include thumbnails when disabled', async () => {
+      const mockVideos: PlaylistVideo[] = [
+        {
+          filename: 'video.yml',
+          yaml: 'content: test',
+          metadata: {
+            title: 'Test Video',
+            description: '',
+            duration: '00:05:00',
+            isLive: false,
+            videoId: 'test123',
+            thumbnails: {
+              standard: { url: 'https://example.com/thumb.jpg', width: 640, height: 480 },
+            },
+          },
+        },
+      ];
+
+      const mockZipInstance = {
+        file: vi.fn(),
+        generateAsync: vi.fn().mockResolvedValue(new Blob([])),
+      };
+      vi.mocked(JSZip).mockImplementation(() => mockZipInstance as any);
+
+      await downloadAsZip(mockVideos, { includeThumbnail: false, thumbnailResolution: 'highest' });
+
+      // Only YAML should be added
+      expect(mockZipInstance.file).toHaveBeenCalledTimes(1);
+      expect(downloadModule.fetchThumbnail).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('downloadCurrentWithThumbnail', () => {
+    beforeEach(() => {
+      vi.useFakeTimers();
+    });
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('should download YAML and thumbnail', async () => {
+      const mockVideo: PlaylistVideo = {
+        filename: 'video.yml',
+        yaml: 'content: test',
+        metadata: {
+          title: 'Test Video',
+          description: '',
+          duration: '00:05:00',
+          isLive: false,
+          videoId: 'test123',
+          thumbnails: {
+            standard: { url: 'https://example.com/thumb.jpg', width: 640, height: 480 },
+          },
+        },
+      };
+
+      const mockBlob = new Blob(['thumbnail-data']);
+      vi.mocked(downloadModule.getThumbnailUrl).mockReturnValue('https://example.com/thumb.jpg');
+      vi.mocked(downloadModule.fetchThumbnail).mockResolvedValue(mockBlob);
+      vi.mocked(downloadModule.getThumbnailExtension).mockReturnValue('jpg');
+
+      const downloadPromise = downloadCurrentWithThumbnail(mockVideo, {
+        includeThumbnail: true,
+        thumbnailResolution: 'highest',
+      });
+
+      await vi.runAllTimersAsync();
+      await downloadPromise;
+
+      expect(downloadModule.downloadFile).toHaveBeenCalledWith('content: test', 'video.yml');
+      expect(downloadModule.downloadBlob).toHaveBeenCalledWith(mockBlob, 'video.jpg');
+    });
+
+    it('should only download YAML when thumbnail is disabled', async () => {
+      const mockVideo: PlaylistVideo = {
+        filename: 'video.yml',
+        yaml: 'content: test',
+        metadata: {
+          title: 'Test Video',
+          description: '',
+          duration: '00:05:00',
+          isLive: false,
+          videoId: 'test123',
+        },
+      };
+
+      await downloadCurrentWithThumbnail(mockVideo, {
+        includeThumbnail: false,
+        thumbnailResolution: 'highest',
+      });
+
+      expect(downloadModule.downloadFile).toHaveBeenCalledWith('content: test', 'video.yml');
+      expect(downloadModule.downloadBlob).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('downloadCurrentAsZip', () => {
+    it('should create ZIP with YAML and thumbnail', async () => {
+      const mockVideo: PlaylistVideo = {
+        filename: 'video.yml',
+        yaml: 'content: test',
+        metadata: {
+          title: 'Test Video',
+          description: '',
+          duration: '00:05:00',
+          isLive: false,
+          videoId: 'test123',
+          thumbnails: {
+            standard: { url: 'https://example.com/thumb.jpg', width: 640, height: 480 },
+          },
+        },
+      };
+
+      const mockBlob = new Blob(['thumbnail-data']);
+      vi.mocked(downloadModule.getThumbnailUrl).mockReturnValue('https://example.com/thumb.jpg');
+      vi.mocked(downloadModule.fetchThumbnail).mockResolvedValue(mockBlob);
+      vi.mocked(downloadModule.getThumbnailExtension).mockReturnValue('jpg');
+
+      const mockZipInstance = {
+        file: vi.fn(),
+        generateAsync: vi.fn().mockResolvedValue(new Blob([])),
+      };
+      vi.mocked(JSZip).mockImplementation(() => mockZipInstance as any);
+
+      await downloadCurrentAsZip(mockVideo, {
+        includeThumbnail: true,
+        thumbnailResolution: 'highest',
+      });
+
+      expect(mockZipInstance.file).toHaveBeenCalledTimes(2);
+      expect(mockZipInstance.file).toHaveBeenCalledWith('video.yml', 'content: test');
+      expect(mockZipInstance.file).toHaveBeenCalledWith('video.jpg', mockBlob);
+    });
+
+    it('should name ZIP file based on video filename', async () => {
+      const mockVideo: PlaylistVideo = {
+        filename: 'my-video.yml',
+        yaml: 'content: test',
+        metadata: {
+          title: 'My Video',
+          description: '',
+          duration: '00:05:00',
+          isLive: false,
+          videoId: 'test123',
+        },
+      };
+
+      const mockZipInstance = {
+        file: vi.fn(),
+        generateAsync: vi.fn().mockResolvedValue(new Blob([])),
+      };
+      vi.mocked(JSZip).mockImplementation(() => mockZipInstance as any);
+
+      await downloadCurrentAsZip(mockVideo, {
+        includeThumbnail: false,
+        thumbnailResolution: 'highest',
+      });
+
+      const linkElement = mockCreateElement.mock.results[0].value;
+      expect(linkElement.download).toBe('my-video.zip');
     });
   });
 });

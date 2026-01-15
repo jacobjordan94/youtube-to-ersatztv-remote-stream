@@ -1,3 +1,5 @@
+import type { Thumbnails } from '@youtube-to-ersatztv/shared';
+
 export interface VideoMetadata {
   title: string;
   description: string;
@@ -5,4 +7,5 @@ export interface VideoMetadata {
   isLive: boolean;
   videoUrl: string;
   publishedAt?: string;
+  thumbnails?: Thumbnails;
 }

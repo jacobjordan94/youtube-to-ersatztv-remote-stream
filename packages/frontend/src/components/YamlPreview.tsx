@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 
-export type DownloadMethod = 'zip' | 'queue' | 'current';
+export type DownloadMethod = 'zip' | 'queue' | 'current' | 'current-zip' | 'current-queue';
 
 interface PlaylistVideo {
   metadata: {

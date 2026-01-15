@@ -3,7 +3,7 @@ import { Label } from '@/components/ui/label';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { PlaylistVideo } from '@youtube-to-ersatztv/shared';
 import type { DownloadMethod } from '@/components/YamlPreview';
-import type { FilenameFormat } from '@/types/config';
+import type { FilenameFormat, ThumbnailResolution } from '@/types/config';
 import { DurationConfig } from './DurationConfig';
 import { ScriptOptionsInput } from './ScriptOptionsInput';
 import { AdditionalConfig } from './AdditionalConfig';
@@ -47,12 +47,16 @@ interface ConfigurationPanelProps {
   includeYear: boolean;
   includeContentRating: boolean;
   contentRating: string;
+  includeThumbnail: boolean;
+  thumbnailResolution: ThumbnailResolution;
   onIncludeTitleChange: (checked: boolean) => void;
   onIncludePlotChange: (checked: boolean) => void;
   onPlotFormatChange: (format: 'string' | 'folded' | 'literal') => void;
   onIncludeYearChange: (checked: boolean) => void;
   onIncludeContentRatingChange: (checked: boolean) => void;
   onContentRatingChange: (value: string) => void;
+  onIncludeThumbnailChange: (checked: boolean) => void;
+  onThumbnailResolutionChange: (resolution: ThumbnailResolution) => void;
 
   // Filename format
   filenameFormat: FilenameFormat;
@@ -97,12 +101,16 @@ export function ConfigurationPanel({
   includeYear,
   includeContentRating,
   contentRating,
+  includeThumbnail,
+  thumbnailResolution,
   onIncludeTitleChange,
   onIncludePlotChange,
   onPlotFormatChange,
   onIncludeYearChange,
   onIncludeContentRatingChange,
   onContentRatingChange,
+  onIncludeThumbnailChange,
+  onThumbnailResolutionChange,
   filenameFormat,
   onFilenameFormatChange,
   onVideoChange,
@@ -199,12 +207,16 @@ export function ConfigurationPanel({
               includeYear={includeYear}
               includeContentRating={includeContentRating}
               contentRating={contentRating}
+              includeThumbnail={includeThumbnail}
+              thumbnailResolution={thumbnailResolution}
               onIncludeTitleChange={onIncludeTitleChange}
               onIncludePlotChange={onIncludePlotChange}
               onPlotFormatChange={onPlotFormatChange}
               onIncludeYearChange={onIncludeYearChange}
               onIncludeContentRatingChange={onIncludeContentRatingChange}
               onContentRatingChange={onContentRatingChange}
+              onIncludeThumbnailChange={onIncludeThumbnailChange}
+              onThumbnailResolutionChange={onThumbnailResolutionChange}
               filenameFormat={filenameFormat}
               onFilenameFormatChange={onFilenameFormatChange}
               isPlaylist={isPlaylist}
@@ -215,6 +227,7 @@ export function ConfigurationPanel({
         <div className="download-controls">
           <DownloadControls
             playlistVideos={playlistVideos}
+            includeThumbnail={includeThumbnail}
             onDownload={onDownload}
             onPlaylistDownload={onPlaylistDownload}
           />

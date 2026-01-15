@@ -39,6 +39,8 @@ function App() {
     includeContentRating: false,
     contentRating: '',
     filenameFormat: 'compact',
+    includeThumbnail: false,
+    thumbnailResolution: 'highest',
   });
 
   const handleConvert = async () => {
@@ -96,6 +98,7 @@ function App() {
           isLive: firstVideo.metadata.isLive,
           videoUrl: cleanUrl,
           publishedAt: firstVideo.metadata.publishedAt,
+          thumbnails: firstVideo.metadata.thumbnails,
         };
 
         // Generate initial YAML for first video
@@ -136,6 +139,7 @@ function App() {
           isLive: response.metadata.isLive,
           videoUrl: cleanUrl,
           publishedAt: response.metadata.publishedAt,
+          thumbnails: response.metadata.thumbnails,
         };
 
         // Generate initial YAML

@@ -8,6 +8,20 @@ export interface ConvertVideoRequest {
   paddingInterval?: number;
 }
 
+export interface ThumbnailInfo {
+  url: string;
+  width: number;
+  height: number;
+}
+
+export interface Thumbnails {
+  default?: ThumbnailInfo;
+  medium?: ThumbnailInfo;
+  high?: ThumbnailInfo;
+  standard?: ThumbnailInfo;
+  maxres?: ThumbnailInfo;
+}
+
 export interface VideoMetadata {
   title: string;
   description: string;
@@ -15,6 +29,7 @@ export interface VideoMetadata {
   isLive: boolean;
   videoId: string;
   publishedAt?: string;
+  thumbnails?: Thumbnails;
 }
 
 export interface ConvertVideoResponse {

@@ -1,7 +1,8 @@
 import { Separator } from './ui/separator';
 import { AdditionalFieldsConfig } from './AdditionalFieldsConfig';
 import { FilenameFormatSelect } from './FilenameFormatSelect';
-import type { FilenameFormat } from '@/types/config';
+import { ThumbnailConfig } from './ThumbnailConfig';
+import type { FilenameFormat, ThumbnailResolution } from '@/types/config';
 
 interface AdditionalConfigProps {
   // Additional fields props
@@ -23,6 +24,12 @@ interface AdditionalConfigProps {
   onFilenameFormatChange: (format: FilenameFormat) => void;
   isPlaylist: boolean;
 
+  // Thumbnail props
+  includeThumbnail: boolean;
+  thumbnailResolution: ThumbnailResolution;
+  onIncludeThumbnailChange: (checked: boolean) => void;
+  onThumbnailResolutionChange: (resolution: ThumbnailResolution) => void;
+
   disabled: boolean;
 }
 
@@ -42,6 +49,10 @@ export function AdditionalConfig({
   filenameFormat,
   onFilenameFormatChange,
   isPlaylist,
+  includeThumbnail,
+  thumbnailResolution,
+  onIncludeThumbnailChange,
+  onThumbnailResolutionChange,
   disabled,
 }: AdditionalConfigProps) {
   return (
@@ -65,12 +76,18 @@ export function AdditionalConfig({
       <div className="flex items-stretch">
         <Separator orientation="vertical" className="bg-gray-600" />
       </div>
-      <div className="flex-1">
+      <div className="flex-1 space-y-4">
         <FilenameFormatSelect
           filenameFormat={filenameFormat}
           onFilenameFormatChange={onFilenameFormatChange}
           isPlaylist={isPlaylist}
           disabled={disabled}
+        />
+        <ThumbnailConfig
+          includeThumbnail={includeThumbnail}
+          thumbnailResolution={thumbnailResolution}
+          onIncludeThumbnailChange={onIncludeThumbnailChange}
+          onThumbnailResolutionChange={onThumbnailResolutionChange}
         />
       </div>
     </div>
