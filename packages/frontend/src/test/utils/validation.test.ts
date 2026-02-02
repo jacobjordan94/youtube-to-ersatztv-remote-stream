@@ -76,10 +76,12 @@ describe('validateYouTubeVideoUrl', () => {
   });
 
   it('should reject null or undefined', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result1 = validateYouTubeVideoUrl(null as any);
     expect(result1.valid).toBe(false);
     expect(result1.error).toBe('URL is required');
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result2 = validateYouTubeVideoUrl(undefined as any);
     expect(result2.valid).toBe(false);
     expect(result2.error).toBe('URL is required');
@@ -151,10 +153,12 @@ describe('validateYouTubePlaylistUrl', () => {
   });
 
   it('should reject null or undefined', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result1 = validateYouTubePlaylistUrl(null as any);
     expect(result1.valid).toBe(false);
     expect(result1.error).toBe('URL is required');
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result2 = validateYouTubePlaylistUrl(undefined as any);
     expect(result2.valid).toBe(false);
     expect(result2.error).toBe('URL is required');
@@ -208,9 +212,11 @@ describe('sanitizeScriptOptions', () => {
   });
 
   it('should handle null or undefined', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result1 = sanitizeScriptOptions(null as any);
     expect(result1).toBe('');
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result2 = sanitizeScriptOptions(undefined as any);
     expect(result2).toBe('');
   });
@@ -264,10 +270,12 @@ describe('validateDuration', () => {
   });
 
   it('should reject non-string values', () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result1 = validateDuration(null as any);
     expect(result1.valid).toBe(false);
     expect(result1.error).toBe('Duration is required');
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result2 = validateDuration(undefined as any);
     expect(result2.valid).toBe(false);
     expect(result2.error).toBe('Duration is required');

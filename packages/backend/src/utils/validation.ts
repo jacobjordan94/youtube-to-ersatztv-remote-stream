@@ -190,7 +190,7 @@ export function sanitizeScriptOptions(options: string): ValidationResult {
 
   // Allow only safe characters for yt-dlp commands
   // Alphanumeric, spaces, hyphens, underscores, forward slashes, curly braces, square brackets, dots, colons
-  const safePattern = /^[a-zA-Z0-9\s\-_./{}\[\]:]*$/;
+  const safePattern = /^[a-zA-Z0-9\s\-_./{}[\]:]*$/;
   if (!safePattern.test(sanitized)) {
     return { valid: false, error: 'Script options contain invalid characters' };
   }

@@ -136,7 +136,7 @@ export function sanitizeScriptOptions(options: string): string {
 
   // Remove shell metacharacters that could be used for command injection
   // Keep only: alphanumeric, spaces, hyphens, underscores, forward slashes, curly braces, dots
-  sanitized = sanitized.replace(/[^\w\s\-_./{}\[\]]/g, '');
+  sanitized = sanitized.replace(/[^\w\s\-_./{}[\]]/g, '');
 
   return sanitized.trim();
 }

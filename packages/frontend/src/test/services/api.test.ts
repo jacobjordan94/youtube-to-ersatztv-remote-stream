@@ -437,6 +437,7 @@ describe('API Service', () => {
 
       vi.mocked(fetch).mockResolvedValue({
         ok: true,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         json: async () => ({ yaml: 'test', metadata: {} as any }),
       } as Response);
 

@@ -59,8 +59,10 @@ export function formatFilename(
           .toLowerCase();
         break;
       }
-      const prefixBase = formatFilename(title, 'compact', undefined, maxLength - 4);
-      return `${String(index + 1).padStart(3, '0')}-${prefixBase}`;
+      {
+        const prefixBase = formatFilename(title, 'compact', undefined, maxLength - 4);
+        return `${String(index + 1).padStart(3, '0')}-${prefixBase}`;
+      }
 
     case 'sequential-suffix':
       if (index === undefined) {
@@ -71,8 +73,10 @@ export function formatFilename(
           .toLowerCase();
         break;
       }
-      const suffixBase = formatFilename(title, 'compact', undefined, maxLength - 4);
-      return `${suffixBase}-${String(index + 1).padStart(3, '0')}`;
+      {
+        const suffixBase = formatFilename(title, 'compact', undefined, maxLength - 4);
+        return `${suffixBase}-${String(index + 1).padStart(3, '0')}`;
+      }
   }
 
   return formatted.substring(0, maxLength);

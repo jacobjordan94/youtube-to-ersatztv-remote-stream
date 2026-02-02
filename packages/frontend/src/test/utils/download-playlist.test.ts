@@ -23,12 +23,14 @@ vi.mock('../../utils/download', () => ({
 }));
 
 describe('Download Playlist Utilities', () => {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   let mockCreateElement: any;
   let mockAppendChild: any;
   let mockRemoveChild: any;
   let mockClick: any;
   let mockCreateObjectURL: any;
   let mockRevokeObjectURL: any;
+  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   beforeEach(() => {
     // Add URL methods to globalThis if they don't exist (jsdom doesn't have them)
@@ -48,9 +50,12 @@ describe('Download Playlist Utilities', () => {
       click: mockClick,
       href: '',
       download: '',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any);
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mockAppendChild = vi.spyOn(document.body, 'appendChild').mockImplementation(() => null as any);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     mockRemoveChild = vi.spyOn(document.body, 'removeChild').mockImplementation(() => null as any);
 
     mockCreateObjectURL = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:mock-url');
@@ -95,6 +100,7 @@ describe('Download Playlist Utilities', () => {
         generateAsync: vi.fn().mockResolvedValue(new Blob(['mock-zip-content'])),
       };
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.mocked(JSZip).mockImplementation(() => mockZipInstance as any);
 
       await downloadAsZip(mockVideos);
@@ -129,6 +135,7 @@ describe('Download Playlist Utilities', () => {
         generateAsync: vi.fn().mockResolvedValue(mockBlob),
       };
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.mocked(JSZip).mockImplementation(() => mockZipInstance as any);
 
       await downloadAsZip(mockVideos);
@@ -157,6 +164,7 @@ describe('Download Playlist Utilities', () => {
         generateAsync: vi.fn().mockResolvedValue(new Blob([])),
       };
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.mocked(JSZip).mockImplementation(() => mockZipInstance as any);
 
       await downloadAsZip(mockVideos);
@@ -185,6 +193,7 @@ describe('Download Playlist Utilities', () => {
         generateAsync: vi.fn().mockResolvedValue(new Blob([])),
       };
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.mocked(JSZip).mockImplementation(() => mockZipInstance as any);
 
       await downloadAsZip(mockVideos);
@@ -215,6 +224,7 @@ describe('Download Playlist Utilities', () => {
         generateAsync: vi.fn().mockResolvedValue(new Blob([])),
       };
 
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.mocked(JSZip).mockImplementation(() => mockZipInstance as any);
 
       await downloadAsZip(mockVideos);
@@ -490,6 +500,7 @@ describe('Download Playlist Utilities', () => {
         file: vi.fn(),
         generateAsync: vi.fn().mockResolvedValue(new Blob([])),
       };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.mocked(JSZip).mockImplementation(() => mockZipInstance as any);
 
       await downloadAsZip(mockVideos, { includeThumbnail: true, thumbnailResolution: 'highest' });
@@ -525,6 +536,7 @@ describe('Download Playlist Utilities', () => {
         file: vi.fn(),
         generateAsync: vi.fn().mockResolvedValue(new Blob([])),
       };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.mocked(JSZip).mockImplementation(() => mockZipInstance as any);
 
       // Should not throw
@@ -557,6 +569,7 @@ describe('Download Playlist Utilities', () => {
         file: vi.fn(),
         generateAsync: vi.fn().mockResolvedValue(new Blob([])),
       };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.mocked(JSZip).mockImplementation(() => mockZipInstance as any);
 
       await downloadAsZip(mockVideos, { includeThumbnail: false, thumbnailResolution: 'highest' });
@@ -658,6 +671,7 @@ describe('Download Playlist Utilities', () => {
         file: vi.fn(),
         generateAsync: vi.fn().mockResolvedValue(new Blob([])),
       };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.mocked(JSZip).mockImplementation(() => mockZipInstance as any);
 
       await downloadCurrentAsZip(mockVideo, {
@@ -687,6 +701,7 @@ describe('Download Playlist Utilities', () => {
         file: vi.fn(),
         generateAsync: vi.fn().mockResolvedValue(new Blob([])),
       };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       vi.mocked(JSZip).mockImplementation(() => mockZipInstance as any);
 
       await downloadCurrentAsZip(mockVideo, {

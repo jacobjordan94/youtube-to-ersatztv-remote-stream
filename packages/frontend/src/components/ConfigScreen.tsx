@@ -184,7 +184,6 @@ export function ConfigScreen({ isPlaylist, conversionResult }: ConfigScreenProps
       newSettings.set(selectedVideoIndex, getCurrentSettings());
       setPerFileSettings(newSettings);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     durationMode,
     customDuration,
@@ -269,7 +268,6 @@ export function ConfigScreen({ isPlaylist, conversionResult }: ConfigScreenProps
       const newYaml = generateYaml(videoMetadata, getCurrentSettings());
       setYamlPreview(newYaml);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     durationMode,
     customDuration,

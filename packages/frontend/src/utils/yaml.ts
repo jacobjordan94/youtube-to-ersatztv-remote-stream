@@ -41,15 +41,17 @@ export const formatPlot = (
     case 'string':
       return `plot: "${escapeYamlString(description)}"`;
 
-    case 'folded':
+    case 'folded': {
       // Folded block scalar - newlines become spaces, blank lines create paragraphs
       const foldedLines = description.split('\n').map((line) => `  ${line}`);
       return `plot: >\n${foldedLines.join('\n')}`;
+    }
 
-    case 'literal':
+    case 'literal': {
       // Literal block scalar - preserves exact formatting
       const literalLines = description.split('\n').map((line) => `  ${line}`);
       return `plot: |\n${literalLines.join('\n')}`;
+    }
   }
 };
 
@@ -84,7 +86,7 @@ export const generateYaml = (metadata: YamlMetadata, settings: YamlConfigSetting
       case 'api':
         duration = metadata.duration;
         break;
-      case 'api-padded':
+      case 'api-padded': {
         // Calculate padded duration locally
         const [hours, minutes, seconds] = metadata.duration.split(':').map(Number);
         const totalMinutes = hours * 60 + minutes + (seconds > 0 ? 1 : 0);
@@ -94,6 +96,7 @@ export const generateYaml = (metadata: YamlMetadata, settings: YamlConfigSetting
         const paddedMins = paddedMinutes % 60;
         duration = [paddedHours, paddedMins, 0].map((v) => String(v).padStart(2, '0')).join(':');
         break;
+      }
       case 'none':
         // No duration for VODs when mode is 'none'
         duration = undefined;
