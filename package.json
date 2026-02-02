@@ -12,8 +12,8 @@
     "lint": "pnpm --filter \"./packages/**\" lint",
     "format": "prettier --write \"packages/**/*.{ts,tsx,json,md}\"",
     "deploy": "pnpm deploy:backend && pnpm deploy:frontend",
-    "deploy:backend": "pnpm --filter backend deploy",
-    "deploy:frontend": "pnpm --filter frontend deploy",
+    "deploy:backend": "pnpm --filter backend run deploy",
+    "deploy:frontend": "pnpm --filter frontend run deploy",
     "type-check": "pnpm --filter \"./packages/**\" type-check"
   },
   "devDependencies": {
