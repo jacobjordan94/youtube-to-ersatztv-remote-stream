@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
 import type { PlaylistVideo } from '@youtube-to-ersatztv/shared';
 import type { ConversionResult } from '@/types/conversion';
-import type { ConfigSettings, SettingsMode, FilenameFormat, ThumbnailResolution } from '@/types/config';
+import type {
+  ConfigSettings,
+  SettingsMode,
+  FilenameFormat,
+  ThumbnailResolution,
+} from '@/types/config';
 import type { VideoMetadata } from '@/types/metadata';
 import type { DownloadMethod } from '@/components/YamlPreview';
 import { generateYaml } from '@/utils/yaml';
@@ -14,20 +19,19 @@ import {
   downloadCurrentAsZip,
 } from '@/utils/download-playlist';
 import { formatFilename } from '@/utils/filename';
-import { BackButton } from './BackButton';
 import { SettingsModeToggle } from './SettingsModeToggle';
 import { YamlPreview } from './YamlPreview';
 import { ConfigurationPanel } from './ConfigurationPanel';
 import { ModeChangeDialog } from './ModeChangeDialog';
 import { ResetAllDialog } from './ResetAllDialog';
+import { AnimatePresence, motion } from 'motion/react';
 
 interface ConfigScreenProps {
-  onBack: () => void;
   isPlaylist: boolean;
   conversionResult: ConversionResult;
 }
 
-export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScreenProps) {
+export function ConfigScreen({ isPlaylist, conversionResult }: ConfigScreenProps) {
   // Configuration state - all settings
   const [durationMode, setDurationMode] = useState<'none' | 'custom' | 'api' | 'api-padded'>(
     conversionResult.initialSettings.durationMode
@@ -440,8 +444,6 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
 
   return (
     <>
-      <BackButton onBack={onBack} />
-
       {yamlPreview && videoTitle && (
         <>
           {/* Mode Toggle - Only in playlist mode */}
@@ -459,19 +461,27 @@ export function ConfigScreen({ onBack, isPlaylist, conversionResult }: ConfigScr
               onResetAll={() => setShowResetAllDialog(true)}
             />
           )}
-
-          <YamlPreview
-            yaml={yamlPreview}
-            filename={
-              isPlaylist && playlistVideos[selectedVideoIndex]
-                ? playlistVideos[selectedVideoIndex].filename
-                : `${formatFilename(videoTitle || '', filenameFormat)}.yml`
-            }
-            playlistVideos={isPlaylist ? playlistVideos : undefined}
-            selectedVideoIndex={selectedVideoIndex}
-            onVideoChange={handlePlaylistVideoChange}
-            visitedFiles={settingsMode === 'per-file' ? visitedFiles : undefined}
-          />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={'result-' + selectedVideoIndex}
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 50 }}
+            >
+              <YamlPreview
+                yaml={yamlPreview}
+                filename={
+                  isPlaylist && playlistVideos[selectedVideoIndex]
+                    ? playlistVideos[selectedVideoIndex].filename
+                    : `${formatFilename(videoTitle || '', filenameFormat)}.yml`
+                }
+                playlistVideos={isPlaylist ? playlistVideos : undefined}
+                selectedVideoIndex={selectedVideoIndex}
+                onVideoChange={handlePlaylistVideoChange}
+                visitedFiles={settingsMode === 'per-file' ? visitedFiles : undefined}
+              />
+            </motion.div>
+          </AnimatePresence>
         </>
       )}
 

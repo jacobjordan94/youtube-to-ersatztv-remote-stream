@@ -55,9 +55,7 @@ describe('getThumbnailUrl', () => {
 
   describe('specific resolutions', () => {
     it('should return exact resolution when available', () => {
-      expect(getThumbnailUrl(allThumbnails, 'standard')).toBe(
-        'https://example.com/standard.jpg'
-      );
+      expect(getThumbnailUrl(allThumbnails, 'standard')).toBe('https://example.com/standard.jpg');
       expect(getThumbnailUrl(allThumbnails, 'high')).toBe('https://example.com/high.jpg');
       expect(getThumbnailUrl(allThumbnails, 'medium')).toBe('https://example.com/medium.jpg');
     });
@@ -132,11 +130,7 @@ describe('getThumbnailExtension', () => {
   });
 
   it('should handle YouTube thumbnail URLs', () => {
-    expect(
-      getThumbnailExtension('https://i.ytimg.com/vi/abc123/maxresdefault.jpg')
-    ).toBe('jpg');
-    expect(
-      getThumbnailExtension('https://i.ytimg.com/vi/abc123/hqdefault.webp')
-    ).toBe('webp');
+    expect(getThumbnailExtension('https://i.ytimg.com/vi/abc123/maxresdefault.jpg')).toBe('jpg');
+    expect(getThumbnailExtension('https://i.ytimg.com/vi/abc123/hqdefault.webp')).toBe('webp');
   });
 });

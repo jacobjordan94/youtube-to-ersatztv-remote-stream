@@ -6,7 +6,14 @@ export type FilenameFormat =
   | 'sequential-prefix' // 001-my-video-title.yml (playlist only)
   | 'sequential-suffix'; // my-video-title-001.yml (playlist only)
 
-export type ThumbnailResolution = 'highest' | 'lowest' | 'default' | 'medium' | 'high' | 'standard' | 'maxres';
+export type ThumbnailResolution =
+  | 'highest'
+  | 'lowest'
+  | 'default'
+  | 'medium'
+  | 'high'
+  | 'standard'
+  | 'maxres';
 
 export interface ConfigSettings {
   durationMode: 'none' | 'custom' | 'api' | 'api-padded';

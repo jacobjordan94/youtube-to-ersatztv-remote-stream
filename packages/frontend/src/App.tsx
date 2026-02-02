@@ -10,10 +10,11 @@ import {
 } from '@/utils/validation';
 import type { ConversionResult } from '@/types/conversion';
 import type { ConfigSettings, AppScreen } from '@/types/config';
-import ApplicationHeader from './components/ApplicationHeader';
 import { InputScreen } from './components/InputScreen';
 import { ConfigScreen } from './components/ConfigScreen';
 import { Footer } from './components/Footer';
+import { AnimatePresence, motion } from 'motion/react';
+import { BackButton } from './components/BackButton';
 
 function App() {
   // Minimal shared state
@@ -183,26 +184,46 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-neutral-900 to-neutral-700">
       <div className="container mx-auto px-4 pt-12 pb-4 max-w-4xl">
-        <ApplicationHeader />
-
-        {appScreen === 'input' ? (
-          <InputScreen
-            url={url}
-            onUrlChange={setUrl}
-            onPlaylistDetected={setIsPlaylist}
-            onConvert={handleConvert}
-            error={error}
-            loading={loading}
-          />
-        ) : (
-          conversionResult && (
-            <ConfigScreen
-              onBack={handleReset}
-              isPlaylist={isPlaylist}
-              conversionResult={conversionResult}
-            />
-          )
-        )}
+        <AnimatePresence mode="wait">
+          {appScreen !== 'input' && conversionResult && (
+            <motion.div
+              className="fixed top-4 left-4 z-40"
+              initial={{ x: -50 }}
+              animate={{ x: 0 }}
+              exit={{ y: -50 }}
+            >
+              <BackButton onBack={handleReset} />
+            </motion.div>
+          )}
+          {appScreen === 'input' ? (
+            <motion.div
+              key="input-screen"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+            >
+              <InputScreen
+                url={url}
+                onUrlChange={setUrl}
+                onPlaylistDetected={setIsPlaylist}
+                onConvert={handleConvert}
+                error={error}
+                loading={loading}
+              />
+            </motion.div>
+          ) : (
+            conversionResult && (
+              <motion.div
+                key="result-screen"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+              >
+                <ConfigScreen isPlaylist={isPlaylist} conversionResult={conversionResult} />
+              </motion.div>
+            )
+          )}
+        </AnimatePresence>
 
         <Footer />
       </div>

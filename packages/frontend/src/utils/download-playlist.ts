@@ -31,10 +31,7 @@ export async function downloadAsZip(
 
     // Add thumbnail if enabled
     if (options?.includeThumbnail) {
-      const thumbnailUrl = getThumbnailUrl(
-        video.metadata.thumbnails,
-        options.thumbnailResolution
-      );
+      const thumbnailUrl = getThumbnailUrl(video.metadata.thumbnails, options.thumbnailResolution);
       if (thumbnailUrl) {
         try {
           const blob = await fetchThumbnail(thumbnailUrl);
@@ -76,10 +73,7 @@ export async function downloadAsQueue(
 
     // Download thumbnail if enabled
     if (options?.includeThumbnail) {
-      const thumbnailUrl = getThumbnailUrl(
-        video.metadata.thumbnails,
-        options.thumbnailResolution
-      );
+      const thumbnailUrl = getThumbnailUrl(video.metadata.thumbnails, options.thumbnailResolution);
       if (thumbnailUrl) {
         try {
           const blob = await fetchThumbnail(thumbnailUrl);
@@ -119,10 +113,7 @@ export async function downloadCurrentWithThumbnail(
 
   // Download thumbnail if enabled
   if (options.includeThumbnail) {
-    const thumbnailUrl = getThumbnailUrl(
-      video.metadata.thumbnails,
-      options.thumbnailResolution
-    );
+    const thumbnailUrl = getThumbnailUrl(video.metadata.thumbnails, options.thumbnailResolution);
     if (thumbnailUrl) {
       try {
         const blob = await fetchThumbnail(thumbnailUrl);
@@ -154,10 +145,7 @@ export async function downloadCurrentAsZip(
 
   // Add thumbnail if enabled
   if (options.includeThumbnail) {
-    const thumbnailUrl = getThumbnailUrl(
-      video.metadata.thumbnails,
-      options.thumbnailResolution
-    );
+    const thumbnailUrl = getThumbnailUrl(video.metadata.thumbnails, options.thumbnailResolution);
     if (thumbnailUrl) {
       try {
         const blob = await fetchThumbnail(thumbnailUrl);
